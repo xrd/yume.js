@@ -61,14 +61,13 @@ You could of course pull from a remote source, and convert from JSON into the da
 
 ## Todo
 
-[] Load large models in background (make comics appear to load faster).
-[] Specify when captions display instead of at the end of the scene duration. 
-[] Add annotations for thought and speech bubbles to models.
-[] Add annotations as plugins: enhance models with animated stars, etc.
-[] Add support for primitive shapes: torus, etc.
-[] Add support for rotations with duration
-[] Is rigging possible with models?
-
+- [ ] Load large models in background (make comics appear to load faster).
+- [ ] Specify when captions display instead of at the end of the scene duration. 
+- [ ] Add annotations for thought and speech bubbles to models.
+- [ ] Add annotations as plugins: enhance models with animated stars, etc.
+- [ ] Add support for primitive shapes: torus, etc.
+- [ ] Add support for rotations with duration
+- [ ] Is rigging possible with models?
 
 ## Adding models
 
