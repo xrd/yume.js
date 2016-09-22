@@ -2,11 +2,11 @@ var data = {};
 var sceneIndex = 0;
 data.models = [];
 data.duration = 10;
-data.models.push( { name: "man", rotate: { x: 0, y: 12, z: 0 },
+data.models.push( { name: "man", rotate: { y: 327 },
 		    position: { x: 40, y: 100, z: 150 } } );
-data.models.push( { name: "monitor", rotate: { x: 0, y: 9, z: 0 },
+data.models.push( { name: "monitor", rotate: { y: 155 },
 		    position: { x: 275, y: 10, z: -400 } } );
-data.models.push( { name: "mobster", rotate: { x: 0, y: 15, z: 0 },
+data.models.push( { name: "mobster", rotate: { y: 139 },
 		    position: { x: 200, y: 90, z: -250 } } );
 
 data.camera = {};
@@ -31,8 +31,7 @@ scenes.push( data2 );
 data3 = {};
 data3.models = [];
 data3.caption = "But, then I discovered <a href='https://github.com/xrd/yume.js' target='_new'>yume.js</a>.<br/><br/>And, life was never the same <i>drudgery again.</i>";
-data3.models.push( { name: "monitor", position: { y: 40 } } ); //, rotate: { x: 0, y: 0, z: 0 },
-//position: { x: 0, y: 0, z: 0 } } );
+data3.models.push( { name: "monitor", position: { y: 40 } } ); 
 data3.duration = 10;
 data3.camera = {};
 data3.camera.x = 0;

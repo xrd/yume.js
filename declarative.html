@@ -8,6 +8,7 @@
   </head>
 
   <body>
+
     <div class="container">
     <div id="caption"></div>
     <div id="comic"></div>
@@ -21,16 +22,19 @@
     <script src="yume.js"></script>
 
     <div id="script">
-      <scene duration="5" camera="30,50,-100">
-	<character src="monitor">
-      </scene>
+      <yume:scene duration="5" camera="30,50,-100">
+	<yume:caption>This is not a monitor, it is a 3D image of one.</yume:caption>
+	<yume:character src="monitor"/>
+      </yume:scene>
     </div>
 
     <script>
+      window.onload = function() {
       var yume = new Yume();
       yume.parse( "#script" );
       yume.setup();
       yume.bindProgressionButtons( "next", "back" );
+      }
     </script>
     
 <script>
