@@ -1,6 +1,6 @@
 # Yume.js: make comics on your mobile device.
 
-Yume.js builds on top of the excellent (P5.js)[https://p5js.org/libraries/]
+Yume.js builds on top of the excellent [P5.js](https://p5js.org/libraries/)
 library and makes it easy to create shareable and hackable comics
 from your mobile device.
 
@@ -35,8 +35,8 @@ This works: it creates a comic with a single scene, a floating monitor (from a 3
 and animates the camera from 0,0,0 to 30,50,-100 over five seconds. Then, it displays a caption that says "This is not a monitor, it is a 
 3D image of one." A declarative language like this means you can write comics inside 
 Markdown files in a Jekyll blog (hosted for free on GitHub) using the 
-(open source)[https://github.com/xrd/TeddyHyde]
-(GitHub editor for Android)[https://play.google.com/store/apps/details?id=com.EditorHyde.app].
+[open source](https://github.com/xrd/TeddyHyde)
+[GitHub editor for Android](https://play.google.com/store/apps/details?id=com.EditorHyde.app).
 
 As a side effect of building this parser, I needed to convert the HTML into an intermediate data format. That format is exposed
 too, so if you prefer to use JSON to define your comic, you could do this.
