@@ -1,0 +1,49 @@
+    .comic {
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    /* font-family: "Comic Sans MS", cursive, sans-serif; */
+    }
+    .container {
+	position: relative;
+	width: 100%;
+    }
+
+    .container #caption {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	border: 1px solid black;
+	border-bottom: 3px solid black;
+	background-color: white;
+	width: 90%;
+	padding: 0.3em;
+	font-size: 1.4em;
+	display: none;
+    }
+
+    .container .progression {
+	position: absolute;
+	bottom: -40px;
+	text-decoration: underline;
+	background-color: #ddd;
+	border: 3px solid grey;
+	width: 6em;
+	display: none;
+	text-align: center;
+    }
+
+    .container #back {
+	position: absolute;
+	left: 10px;
+    }
+
+    .container #next {
+	position: absolute;
+	right: 20px;
+
+    }
+
+    .container .comic {
+	height: 500px;
+	width: 500px;
+	position: absolute;
+    }
