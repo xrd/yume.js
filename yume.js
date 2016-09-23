@@ -175,7 +175,7 @@ function Yume() {
 	output = function( value ) {
 	    var currentTime = elapsedTimeInMs();
 	    if( currentTime  % 60 == 0 ) {
-		console.log( "DEBUG: ", value, currentTime );
+		// console.log( "DEBUG: ", value, currentTime );
 	    }
 	}
 
@@ -186,7 +186,7 @@ function Yume() {
 	}
 
 	function sceneIsOver( sceneDurationInMs ) {
-	    return ( elapsedTimeInMs() < sceneDurationInMs );
+	    return ( elapsedTimeInMs() > sceneDurationInMs );
 	}
 
 	p.draw = function() {
@@ -196,7 +196,7 @@ function Yume() {
 
 	    if( data ) {
 		var sceneDuration = data.duration * MS_PER_SECOND;
-		if( sceneIsOver( sceneDuration ) ) {
+		if( !sceneIsOver( sceneDuration ) ) {
 		    if( data.camera ) {
 			easeCamera( p );
 		    }
@@ -211,8 +211,21 @@ function Yume() {
 		    }
 		}
 		
-		p.pointLight( 200, 200, 200, 89, 45, 0);
-		p.background( 200 );
+
+		if( data.pointLight ) {
+		    var pl = data.pointLight;
+		    p.pointLight( pl.x, pl.y, pl.z, pl.x1, pl.y2, pl.z2 );
+		}
+		else {
+		    p.pointLight( 200, 200, 200, 89, 45, 0);
+		}
+		
+		if( data.background ) {
+		    p.background( data.background );
+		}
+		else {
+		    p.background( 220 );
+		}
 		
 		for( var i = 0; i < data.models.length; i++ ) {
 		    var pos = data.models[i].position || {};
@@ -221,12 +234,11 @@ function Yume() {
 		    var z = pos.z || 0;
 
 		    var movement = data.models[i].movement;
-		    if( sceneIsOver( sceneDuration ) ) {
+		    if( !sceneIsOver( sceneDuration ) ) {
 			if( movement ) {
-			    var dur = data.duration * MS_PER_SECOND;
-			    x += ease( movement.x, dur );
-			    y += ease( movement.y, dur );
-			    z += ease( movement.z, dur );
+			    x += ease( movement.x, sceneDuration );
+			    y += ease( movement.y, sceneDuration );
+			    z += ease( movement.z, sceneDuration );
 			}
 		    }
 		    else {
@@ -242,11 +254,28 @@ function Yume() {
 
 		    p.push()
 		    p.translate( x, y, z );
-		    initRot = data.models[i].initialRotation || {};
-		    p.rotateX( p.radians( initRot.x ) || 0 ); 
-		    p.rotateY( p.radians( initRot.y ) || 0 );
-		    p.rotateZ( p.radians( initRot.z ) || 0 );
+		    var initRot = data.models[i].initialRotation || {};
+		    var rotation = data.models[i].rotation || {};
+		    var x = initRot.x || 0, y = initRot.y || 0, z = initRot.z || 0;
+		    if( !sceneIsOver( sceneDuration ) ) {
+			if( rotation ) {
+			    x += ease( rotation.x, sceneDuration );
+			    y += ease( rotation.y, sceneDuration );
+			    z += ease( rotation.z, sceneDuration );
+			}
+		    }
+		    else {
+			if( rotation ) {
+			    x += rotation.x;
+			    y += rotation.y;
+			    z += rotation.z;
+			}
+		    }
+		    p.rotateX( p.radians( x ) || 0 ); 
+		    p.rotateY( p.radians( y ) || 0 );
+		    p.rotateZ( p.radians( z ) || 0 );
 		    p.model( data.models[i].model );
+
 		    p.pop();
 		}
 	    }

@@ -2,7 +2,9 @@ var data = {};
 var sceneIndex = 0;
 data.models = [];
 data.duration = 10;
-data.models.push( { name: "man", initialRotation: { y: 327 },
+data.models.push( { name: "man", initialRotation: { y: 100 },
+		    rotation: { y: -110 },
+		    // movement: { y: 40 },
 		    position: { x: 40, y: 100, z: 150 } } );
 data.models.push( { name: "monitor", initialRotation: { y: 155 },
 		    position: { x: 275, y: 10, z: -400 } } );
@@ -30,7 +32,7 @@ scenes.push( data2 );
 
 data3 = {};
 data3.models = [];
-data3.caption = "But, then I discovered <a href='https://github.com/xrd/yume.js' target='_new'>yume.js</a>.<br/><br/>And, life was never the same <i>drudgery again.</i>";
+data3.caption = "But, then I discovered <a href='https://github.com/xrd/yume.js' target='_new'>yume.js</a>.<br/><br/>I started creating comics on my mobile phone.<br/><br/>And, life was never the same <i>drudgery again.</i>";
 data3.models.push( { name: "monitor", position: { y: 40 } } ); 
 data3.duration = 10;
 data3.camera = {};
