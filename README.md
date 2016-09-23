@@ -1,7 +1,7 @@
 # Yume.js: make comics on your mobile device.
 
 Yume.js builds on top of the excellent [P5.js](https://p5js.org/libraries/)
-library and makes it easy to create shareable and hackable comics
+library and makes it easy to create shareable and hackable 3D (WebGL) comics
 from your mobile device.
 
 ## Getting started
