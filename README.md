@@ -67,10 +67,12 @@ You could of course pull from a remote source, and convert from JSON into the da
 
 - [ ] Load large models in background (make comics appear to load faster).
 - [ ] Specify when captions display instead of at the end of the scene duration. 
+- [ ] Add support for model rotations over duration in scene
+- [ ] Add support for model movement over duration in scene
 - [ ] Add annotations for thought and speech bubbles to models.
 - [ ] Add annotations as plugins: enhance models with animated stars, etc.
+- [ ] Specify any jQuery.easing functions if you have that library loaded.
 - [ ] Add support for primitive shapes: torus, etc.
-- [ ] Add support for rotations with duration
 - [ ] Is rigging possible with models?
 
 ## Adding models

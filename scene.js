@@ -2,11 +2,11 @@ var data = {};
 var sceneIndex = 0;
 data.models = [];
 data.duration = 10;
-data.models.push( { name: "man", rotate: { y: 327 },
+data.models.push( { name: "man", initialRotation: { y: 327 },
 		    position: { x: 40, y: 100, z: 150 } } );
-data.models.push( { name: "monitor", rotate: { y: 155 },
+data.models.push( { name: "monitor", initialRotation: { y: 155 },
 		    position: { x: 275, y: 10, z: -400 } } );
-data.models.push( { name: "mobster", rotate: { y: 139 },
+data.models.push( { name: "mobster", initialRotation: { y: 139 },
 		    position: { x: 200, y: 90, z: -250 } } );
 
 data.camera = {};

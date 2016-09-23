@@ -116,7 +116,6 @@ function Yume() {
 	    if( data ) {
 		var width = window.innerWidth, height = window.innerHeight;
 		
-		console.log( "Setup called, frameRate: " + p.frameCount );
 		var caption = document.getElementById( "caption" );
 		caption.innerHTML = data.caption;
 		camX = 0, camY = 0, camZ = 0;
@@ -152,17 +151,52 @@ function Yume() {
 	function easeCamera( p ) {
 	    var c = data.camera || {};
 	    var x = c.x || 0, y = c.y || 0, z = c.z || 0;
-	    camX = easeInQuad( camX, p.frameCount, 0, x, data.duration * FRAMES_PER_SECOND );
-	    camY = easeInQuad( camY, p.frameCount, 0, y, data.duration * FRAMES_PER_SECOND );
-	    camZ = easeInQuad( camZ, p.frameCount, 0, z, data.duration * FRAMES_PER_SECOND );
-	    // console.log( "Times: ", camX, camY, camZ );
+	    var dur = data.duration * MS_PER_SECOND;
+	    camX = ease( x, dur );
+	    camY = ease( y, dur );
+	    camZ = ease( z, dur );
+	    // console.log( "Camera: ", camX, camY, camZ );
 	    // p.camera( 0.5*p.frameCount, p.frameCount, -2*p.frameCount );
 	    p.camera( camX, camY, camZ );
 	}
 	
+	function ease( value, durationInMs ) {
+	    var rv = easeInQuad( undefined, elapsedTimeInMs(), 0, value, durationInMs );
+	    return rv;
+	}
+
+	var startingTime = 0;
+	var MS_PER_SECOND = 1000;
+
+	function elapsedTimeInMs() {
+	    return ( new Date().getTime() - startingTime );
+	}
+
+	output = function( value ) {
+	    var currentTime = elapsedTimeInMs();
+	    if( currentTime  % 60 == 0 ) {
+		console.log( "DEBUG: ", value, currentTime );
+	    }
+	}
+
+
+	function setStartingTime() {
+	    startingTime = new Date().getTime();
+	    console.log( "Starting time is: " + startingTime );
+	}
+
+	function sceneIsOver( sceneDurationInMs ) {
+	    return ( elapsedTimeInMs() < sceneDurationInMs );
+	}
+
 	p.draw = function() {
+	    if( !startingTime ) {
+		setStartingTime();
+	    }
+
 	    if( data ) {
-		if( p.frameCount < ( data.duration * FRAMES_PER_SECOND ) ) {
+		var sceneDuration = data.duration * MS_PER_SECOND;
+		if( sceneIsOver( sceneDuration ) ) {
 		    if( data.camera ) {
 			easeCamera( p );
 		    }
@@ -175,12 +209,9 @@ function Yume() {
 		    if( data.duration ) {
 			yume.toggleCaptionsAndButtons( "inline-block", "back", "next", this.yume );
 		    }
-		    else if( p.frameCount < DEFAULT_TIMING * FRAMES_PER_SECOND ) {
-			
-		    }
 		}
 		
-		p.pointLight(200, 200, 200, 89, 45, 0);
+		p.pointLight( 200, 200, 200, 89, 45, 0);
 		p.background( 200 );
 		
 		for( var i = 0; i < data.models.length; i++ ) {
@@ -188,12 +219,33 @@ function Yume() {
 		    var x = pos.x || 0;
 		    var y = pos.y || 0;
 		    var z = pos.z || 0;
+
+		    var movement = data.models[i].movement;
+		    if( sceneIsOver( sceneDuration ) ) {
+			if( movement ) {
+			    var dur = data.duration * MS_PER_SECOND;
+			    x += ease( movement.x, dur );
+			    y += ease( movement.y, dur );
+			    z += ease( movement.z, dur );
+			}
+		    }
+		    else {
+			output( "Scene is over: " + sceneDuration );
+			if( movement ) {
+			    x += movement.x;
+			    y += movement.y;
+			    z += movement.z;
+			}
+		    }
+
+		    output( "Movement: " + x + "," + y + "," + z );
+
 		    p.push()
 		    p.translate( x, y, z );
-		    rot = data.models[i].rotate || {};
-		    p.rotateX( p.radians( rot.x ) || 0 ); // convert to radians here!!!
-		    p.rotateY( p.radians( rot.y ) || 0 );
-		    p.rotateZ( p.radians( rot.z ) || 0 );
+		    initRot = data.models[i].initialRotation || {};
+		    p.rotateX( p.radians( initRot.x ) || 0 ); 
+		    p.rotateY( p.radians( initRot.y ) || 0 );
+		    p.rotateZ( p.radians( initRot.z ) || 0 );
 		    p.model( data.models[i].model );
 		    p.pop();
 		}
@@ -229,6 +281,7 @@ function Yume() {
 	    theCamera.y = parseInt( triple[1] || 0 );
 	    theCamera.z = parseInt( triple[2] || 0 );
 	}
+	console.log( "Camera is", theCamera );
 	return theCamera;
     }
     
@@ -239,6 +292,7 @@ function Yume() {
 	    // Use the first one, ignore the rest.
 	    text = captions[0].innerHTML;
 	}
+	console.log( "Caption is", text );
 	return text;
     }
 
@@ -261,10 +315,8 @@ function Yume() {
 	    var characters = scene.getElementsByTagName( "yume:character" );
 	    theScene.models = [];
 	    for( var j = 0; j < characters.length; j++ ) {
-		var character = characters[i];
-		var name = character.getAttribute( "src" );
-
-		theScene.models.push( { name: name } );
+		var character = yume.parseCharacter( characters[j] );
+		theScene.models.push( character ); // { name: name } );
 	    }
 	    scenes.push( theScene );
 	}
@@ -272,6 +324,34 @@ function Yume() {
 	yume.load( scenes );
     }
     
+    this.parseCharacter = function( character ) {
+	var char = {};
+	var name = character.getAttribute( "src" );
+	if( name ) {
+	    console.log( "Name of character is: " + name );
+	    char.name = name;
+	}
+	else {
+	    console.error( "Must specify the src of the character inside yume:character" );
+	}
+
+	var attributes = [ "position", "movement", "rotation" ];
+	for( var i in attributes ) {
+	    var x= attributes[i];
+	    console.log( "Looking for " + x );
+	    var attr = character.getAttribute( x );
+	    if( attr ) {
+		var triple = attr.split( "," );
+		char[x] = {};
+		char[x].x = parseInt( triple[0] );
+		char[x].y = parseInt( triple[1] );
+		char[x].z = parseInt( triple[2] );
+	    }
+	}
+	console.log( "Character is: ", char );
+	return char;
+    }
+
     this.setup = function() {
 	if( yume.scenes && yume.scenes.length > 0 ) { 
 	    var width = window.innerWidth, height = window.innerHeight;	
@@ -284,6 +364,7 @@ function Yume() {
 	    }
 	    else {
 		yume.p5 = new p5( yume.sketch );
+		console.log( "Frame rate", yume.p5.frameRate() );
 	    }
 	}
 	else {
