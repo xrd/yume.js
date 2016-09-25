@@ -43,7 +43,7 @@ Markdown files in a Jekyll blog (hosted for free on GitHub) using the
 [GitHub editor for Android](https://play.google.com/store/apps/details?id=com.EditorHyde.app).
 
 As a side effect of building this parser, I needed to convert the HTML into an intermediate data format. That format is exposed
-too, so if you prefer to use JSON to define your comic, you could do this.
+too, so if you prefer to use imperative JavaScript to define your comic, you could do this.
 
 ```javascript
 var data = {};
@@ -61,7 +61,7 @@ yume.load( scenes );
 yume.setup();
 ```
 
-You could of course pull from a remote source, and convert from JSON into the data too.
+You could of course pull from a remote source, and convert from JSON too.
 
 ## Todo
 
