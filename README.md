@@ -6,7 +6,7 @@ from your mobile device.
 
 ## Why yume.js?
 
-Yume (夢) means dream in Japanese. Yume.js helps me revisit my childhood and is an homage to the first Japanese comic book by Koikawa Harumachi's "Master Flashgold's Splendiferous Dream" (金々先生栄花の夢Kinkin sensei eiga no yume) from 1775.
+Yume (夢) means dream in Japanese. Yume.js helps me revisit the creativity of my childhood and is an homage to the first Japanese comic book by Koikawa Harumachi's "Master Flashgold's Splendiferous Dream" (金々先生栄花の夢Kinkin sensei eiga no yume) from 1775.
 
 ## Getting started
 
