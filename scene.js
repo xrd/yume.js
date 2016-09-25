@@ -11,7 +11,7 @@ data.models.push( { name: "monitor",
 		    initialRotation: { y: 155 },
 		    position: { x: 275, y: 10, z: -400 } } );
 data.models.push( { name: "mobster",
-		    initialRotation: { y: 339 },
+		    initialRotation: { y: 339, x: 200 },
 		    position: { x: 200, y: 90, z: -250 } } );
 
 data.camera = {};
