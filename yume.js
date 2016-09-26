@@ -112,7 +112,10 @@ function Yume() {
 	
 	var camX = 0, camY = 0, camZ = 0;
 	
-	p.setup = function() {
+	p.setup = function( name ) {
+	    if( !name ) {
+		name = "comic"
+	    }
 	    if( data ) {
 		var width = window.innerWidth, height = window.innerHeight;
 		
@@ -126,7 +129,7 @@ function Yume() {
 		    width = height;
 		}
 		yume.canvas = p.createCanvas( width - 20, height - 70, p.WEBGL );
-		yume.canvas.parent( "comic" );
+		yume.canvas.parent( name );
 	    }
 	    else {
 		document.write( "No data defined for this scene, this may mean you have not properly loaded Yume using load(). See documentation." );
@@ -161,7 +164,11 @@ function Yume() {
 	}
 	
 	function ease( value, durationInMs ) {
-	    var rv = easeInQuad( undefined, elapsedTimeInMs(), 0, value, durationInMs );
+	    var parsed = parseInt( value );
+	    var rv = 0;
+	    if( parsed ) {
+		rv = easeInQuad( undefined, elapsedTimeInMs(), 0, parsed, durationInMs );
+	    }
 	    return rv;
 	}
 
@@ -229,9 +236,9 @@ function Yume() {
 		
 		for( var i = 0; i < data.models.length; i++ ) {
 		    var pos = data.models[i].position || {};
-		    var x = pos.x || 0;
-		    var y = pos.y || 0;
-		    var z = pos.z || 0;
+		    var x = parseInt( pos.x ) || 0;
+		    var y = parseInt( pos.y ) || 0;
+		    var z = parseInt( pos.z ) || 0;
 
 		    var movement = data.models[i].movement;
 		    if( !sceneIsOver( sceneDuration ) ) {
@@ -244,9 +251,9 @@ function Yume() {
 		    else {
 			output( "Scene is over: " + sceneDuration );
 			if( movement ) {
-			    x += movement.x;
-			    y += movement.y;
-			    z += movement.z;
+			    x += parseInt( movement.x );
+			    y += parseInt( movement.y );
+			    z += parseInt( movement.z );
 			}
 		    }
 
@@ -256,20 +263,16 @@ function Yume() {
 		    p.translate( x, y, z );
 		    var initRot = data.models[i].initialRotation || {};
 		    var rotation = data.models[i].rotation || {};
-		    var x = initRot.x || 0, y = initRot.y || 0, z = initRot.z || 0;
+		    var x = parseInt( initRot.x ) || 0, y = parseInt( initRot.y ) || 0, z = parseInt( initRot.z ) || 0;
 		    if( !sceneIsOver( sceneDuration ) ) {
-			if( rotation ) {
-			    x += ease( rotation.x, sceneDuration );
-			    y += ease( rotation.y, sceneDuration );
-			    z += ease( rotation.z, sceneDuration );
-			}
+			x += ease( rotation.x, sceneDuration );
+			y += ease( rotation.y, sceneDuration );
+			z += ease( rotation.z, sceneDuration );
 		    }
 		    else {
-			if( rotation ) {
-			    x += rotation.x;
-			    y += rotation.y;
-			    z += rotation.z;
-			}
+			x += parseInt( rotation.x ) || 0;
+			y += parseInt( rotation.y ) || 0;
+			z += parseInt( rotation.z ) || 0;
 		    }
 		    p.rotateX( p.radians( x ) || 0 ); 
 		    p.rotateY( p.radians( y ) || 0 );

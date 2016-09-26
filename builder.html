@@ -18,7 +18,8 @@
 	  <span ng-show="scene.expanded" ng-click="scene.expanded = !scene.expanded" class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
 	  <span ng-hide="scene.expanded" ng-click="scene.expanded = !scene.expanded" class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
 	</h3>
-	
+
+	<form class="form-inline">
 	<div ng-show="scene.expanded">
 	  <div>
 	    Caption: <input ng-model="scene.caption" placeholder="Caption for comic">
@@ -47,22 +48,19 @@
 	    <button  ng-class='{ "btn-primary" : scene.view == "camera" }' ng-click="scene.view = 'camera'" type="button" class="btn btn-default">Camera</button>
 	    <button  ng-class='{ "btn-primary" : scene.view == "initialRotation" }' ng-click="scene.view = 'initialRotation'" type="button" class="btn btn-default">Initial Rotation</button>
 	  </div>
-	  
+
 	  <div ng-show="'rotate' == scene.view" scene.class="input-group input-group-sm">
 	    <h4>Model Rotation</h4>
 	    <small>Optional. Rotation of the model during the scene (degrees)</small>
-	    <form class="form-inline">
 	      <div class="form-group">
 		<input ng-model="scene.models[0].rotation.x" placeholder="Rotate x">
 		<input ng-model="scene.models[0].rotation.y" placeholder="Rotate y">
 		<input ng-model="scene.models[0].rotation.z" placeholder="Rotate z">
 	      </div>
-	    </form>
 	  </div>
 	  <div ng-show="'initialRotation' == scene.view" scene.class="input-group input-group-sm">
 	    <h4>Model Starting Rotation</h4>
 	    <small>Optional. Initial rotation of the model (degrees)</small>
-	    <form class="form-inline">
 	      <div class="form-group">
 		<input ng-model="scene.models[0].initialRotation.x" placeholder="Rotate x">
 		<input ng-model="scene.models[0].initialRotation.y" placeholder="Rotate y">
@@ -95,13 +93,25 @@
 	  <br/>
 	  <button ng-click="remove($index)">Delete</button>
 	</div>
+	</form>
       </div>
 
       <h3>Yume code</h3>
       <pre>
+	&lt;script&gt;
 	var data = {{ scenes | json }};
 	yume = new Yume();
 	yume.load( data );
+	yume.setup( "comic" );
+	&lt;/script&gt;
+
+	&lt;div id="container"&gt;
+	&lt;div id="caption"&gt; &lt;/div&gt;
+	&lt;div id="comic"&gt; &lt;/div&gt;
+	&lt;div class="progression" id="back"&gt; Back &lt;/div&gt;
+	&lt;div class="progression" id="next"&gt; Next &lt;/div&gt;
+	&lt;/div&gt;
+
       </pre>
       
 
