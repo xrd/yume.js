@@ -12,6 +12,11 @@ mod.controller( 'BuilderCtrl', [ '$scope', '$location', function( $scope, $locat
 	$scope.scenes = JSON.parse( decoded );
     }
 
+    $scope.previewSceneLink = function( scene ) {
+	encoded = btoa( JSON.stringify( [ scene ] ) );
+	return encoded;
+    }
+    
     $scope.$watch( 'scenes', function( newVal, oldVal ) {
 	console.log( "Scenes changed." );
 	$scope.encoded = btoa( JSON.stringify( $scope.scenes ) );
