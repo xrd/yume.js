@@ -36,10 +36,19 @@ scenes.push( data2 );
 data3 = {};
 data3.models = [];
 data3.caption = "But, then I discovered <a href='https://github.com/xrd/yume.js' target='_new'>yume.js</a>.<br/><br/>I started creating comics on my mobile phone.<br/><br/>And, life was never the same <i>drudgery again.</i>";
-data3.models.push( { name: "monitor", position: { y: 40 } } ); 
+data3.models.push(
+    { "name": "phone",
+      "initialRotation": {
+	  "y": "240"
+      },
+      "rotation": {
+	  "y": "100"
+      }
+    }
+); 
 data3.duration = 10;
 data3.camera = {};
 data3.camera.x = 0;
-data3.camera.y = 0;
-data3.camera.z = -200;
+data3.camera.y = -50;
+data3.camera.z = -100;
 scenes.push( data3 );
