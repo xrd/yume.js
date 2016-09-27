@@ -8,6 +8,11 @@ from your mobile device.
 
 Yume (夢) means dream in Japanese. Yume.js helps me revisit the creativity of my childhood and is an homage to the first Japanese comic book by [Koikawa Harumachi's "Master Flashgold's Splendiferous Dream" (金々先生栄花の夢 *Kinkin sensei eiga no yume*)](https://en.m.wikipedia.org/wiki/Comic_book) from 1775.
 
+And, this is a place where I hope we can start writing stories that involve a larger audience.
+[Right now](https://readingspark.wordpress.com/2016/09/14/picture-this-reflecting-diversity-in-childrens-book-publishing/) trucks
+are characters in 12.5% of children's books, while characters of other races constitute only 7.5% African-American, 3.3% Asian-Americans, 2.4% Latinx,and 0.9% American Indians/First World Nations. 73.3% of characters are white, like me,
+but I want diverse stories for my diverse children.
+
 ## Getting started
 
 Use the [builder](https://xrd.github.com/yume.js/builder.html) to play with comics from your mobile device.
