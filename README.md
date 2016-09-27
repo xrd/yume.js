@@ -4,6 +4,10 @@ Yume.js builds on top of the excellent [P5.js](https://p5js.org/libraries/)
 library and makes it easy to create shareable and hackable 3D (WebGL) comics
 from your mobile device.
 
+## Why yume.js?
+
+Yume (夢) means dream in Japanese. Yume.js helps me revisit the creativity of my childhood and is an homage to the first Japanese comic book by [Koikawa Harumachi's "Master Flashgold's Splendiferous Dream" (金々先生栄花の夢 *Kinkin sensei eiga no yume*)](https://en.m.wikipedia.org/wiki/Comic_book) from 1775.
+
 ## Getting started
 
 Use the [builder](https://xrd.github.com/yume.js/builder.html) to play with comics from your mobile device.

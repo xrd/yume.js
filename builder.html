@@ -10,15 +10,16 @@
 
     <div class="container" ng-app="builder">
       <div ng-controller="BuilderCtrl" ng-init="init()">
-	<button class="btn" ng-click="add()">Add scene</button>
-	<a class="btn" target="player" ng-href="player.html?comic={{encoded}}">Play</a>
+	<button class="btn btn-large" ng-click="add()">Add scene</button>
+	<a class="btn btn-large" target="player" ng-href="player.html?comic={{encoded}}">Play</a>
       </br>
       <div class="scene" ng-repeat="scene in scenes">
 	<h3>Scene: {{ ( scene.caption && ( '"' + scene.caption + '"' ) ) || ($index+1) }}
 	  <span ng-show="scene.expanded" ng-click="scene.expanded = !scene.expanded" class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
 	  <span ng-hide="scene.expanded" ng-click="scene.expanded = !scene.expanded" class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
 	</h3>
-	
+
+	<form class="form-inline">
 	<div ng-show="scene.expanded">
 	  <div>
 	    Caption: <input ng-model="scene.caption" placeholder="Caption for comic">
@@ -47,22 +48,19 @@
 	    <button  ng-class='{ "btn-primary" : scene.view == "camera" }' ng-click="scene.view = 'camera'" type="button" class="btn btn-default">Camera</button>
 	    <button  ng-class='{ "btn-primary" : scene.view == "initialRotation" }' ng-click="scene.view = 'initialRotation'" type="button" class="btn btn-default">Initial Rotation</button>
 	  </div>
-	  
+
 	  <div ng-show="'rotate' == scene.view" scene.class="input-group input-group-sm">
 	    <h4>Model Rotation</h4>
 	    <small>Optional. Rotation of the model during the scene (degrees)</small>
-	    <form class="form-inline">
-	      <div class="form-group">
-		<input ng-model="scene.models[0].rotation.x" placeholder="Rotate x">
-		<input ng-model="scene.models[0].rotation.y" placeholder="Rotate y">
-		<input ng-model="scene.models[0].rotation.z" placeholder="Rotate z">
-	      </div>
-	    </form>
+	    <div class="form-group">
+	      <input ng-model="scene.models[0].rotation.x" placeholder="Rotate x">
+	      <input ng-model="scene.models[0].rotation.y" placeholder="Rotate y">
+	      <input ng-model="scene.models[0].rotation.z" placeholder="Rotate z">
+	    </div>
 	  </div>
 	  <div ng-show="'initialRotation' == scene.view" scene.class="input-group input-group-sm">
 	    <h4>Model Starting Rotation</h4>
 	    <small>Optional. Initial rotation of the model (degrees)</small>
-	    <form class="form-inline">
 	      <div class="form-group">
 		<input ng-model="scene.models[0].initialRotation.x" placeholder="Rotate x">
 		<input ng-model="scene.models[0].initialRotation.y" placeholder="Rotate y">
@@ -75,9 +73,9 @@
 	    <small>Optional. Position of the model in the scene</small>
 	    <form class="form-inline">
 	      <div class="form-group">
-	    <input ng-model="scene.models[0].position.x" placeholder="Position x">
-	    <input ng-model="scene.models[0].position.y" placeholder="Position y">
-	    <input ng-model="scene.models[0].position.z" placeholder="Position z">
+		<input ng-model="scene.models[0].position.x" placeholder="Position x">
+		<input ng-model="scene.models[0].position.y" placeholder="Position y">
+		<input ng-model="scene.models[0].position.z" placeholder="Position z">
 	      </div>
 	    </form>
 	  </div>
@@ -86,22 +84,36 @@
 	    <small>Optional. Camera starts at 0,0,0 and then animates to this final destination</small>
 	    <form class="form-inline">
 	      <div class="form-group">
-	    <input ng-model="scene.camera.x" placeholder="Camera destination x">
-	    <input ng-model="scene.camera.y" placeholder="Camera destination y">
-	    <input ng-model="scene.camera.z" placeholder="Camera destination z">
+		<input ng-model="scene.camera.x" placeholder="Camera destination x">
+		<input ng-model="scene.camera.y" placeholder="Camera destination y">
+		<input ng-model="scene.camera.z" placeholder="Camera destination z">
 	      </div>
 	    </form>
 	  </div>
-	  <br/>
-	  <button ng-click="remove($index)">Delete</button>
+	  <div>
+	    <a class="btn btn-large" ng-click="remove($index)">Delete</a>
+	    <a class="btn btn-large" target="player" ng-href="player.html?comic={{previewSceneLink(scene)}}">Preview Scene</a>
+	  </div>
 	</div>
+	</form>
       </div>
 
       <h3>Yume code</h3>
       <pre>
+	&lt;script&gt;
 	var data = {{ scenes | json }};
 	yume = new Yume();
 	yume.load( data );
+	yume.setup( "comic" );
+	&lt;/script&gt;
+
+	&lt;div id="container"&gt;
+	&lt;div id="caption"&gt; &lt;/div&gt;
+	&lt;div id="comic"&gt; &lt;/div&gt;
+	&lt;div class="progression" id="back"&gt; Back &lt;/div&gt;
+	&lt;div class="progression" id="next"&gt; Next &lt;/div&gt;
+	&lt;/div&gt;
+
       </pre>
       
 

@@ -8,7 +8,7 @@ data.models.push( { name: "man",
 		    // movement: { y: 40 },
 		    position: { x: 40, y: 100, z: 150 } } );
 data.models.push( { name: "monitor",
-		    initialRotation: { y: 155 },
+		    initialRotation: { y: 15 },
 		    position: { x: 275, y: 10, z: -400 } } );
 data.models.push( { name: "mobster",
 		    initialRotation: { y: 339 },
