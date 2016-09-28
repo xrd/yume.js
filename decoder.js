@@ -1,7 +1,7 @@
 function decoder() {
     
     var found = false;
-    console.log( window.location );
+    // console.log( window.location );
     //window.location.
     var search = window.location.search;
     if( '?' == search[0] ) {
