@@ -25,7 +25,7 @@
       }
       
       .character-gallery .character {
-      padding: 1em;
+      padding-right: 0.3em;
       height: 28px;
       display: inline-block;
       border-top: none;
@@ -78,73 +78,27 @@
   </head>
 
   <body>
-
+    
     <div class="container" ng-app="builder">
       <div ng-controller="BuilderCtrl" ng-init="init()">
 	<button class="btn btn-large" ng-click="add()">Add scene</button>
 	<a class="btn btn-large" target="player" ng-href="player.html?comic={{encoded}}">Play</a>
 	<div class="scene" ng-repeat="scene in scenes">
 	  <h3>Scene: {{ ( scene.caption && ( '"' + scene.caption + '"' ) ) || ($index+1) }}
-	  <span ng-show="scene.expanded" ng-click="scene.expanded = !scene.expanded" class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
-	  <span ng-hide="scene.expanded" ng-click="scene.expanded = !scene.expanded" class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
-	</h3>
-
-	<form class="form-inline">
-	<div ng-show="scene.expanded">
-	  <div>
-	    Caption: <input ng-model="scene.caption" placeholder="Caption for comic">
-	  </div>
-	  <div>
-	    Duration: <input ng-model="scene.duration" placeholder="Duration, defaults to 5">
-	  </div>
-	  <div>
-	    3D Model(s):
-	    <button class"btn btn-large" ng-click="addCharacter(scene)">+</button>
-	    <span class="character-gallery">
-	      <div ng-class="{ 'selected' : character == scene.currentCharacter }" ng-click="setCurrentCharacter( scene, character)" ng-repeat="character in scene.models" class="character"> {{ character.src }} </div>
-	    </span>
-	  </div>
-
-	  </div>
+	    <span ng-show="scene.expanded" ng-click="scene.expanded = !scene.expanded" class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+	    <span ng-hide="scene.expanded" ng-click="scene.expanded = !scene.expanded" class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+	  </h3>
 	  
-	  <div class="btn-group" role="group" aria-label="...">
-	    <button ng-class='{ "btn-primary" : scene.view == "rotate" }' ng-click="scene.view = 'rotate'" type="button" class="btn btn-default">Rotate</button>
-	    <button ng-class='{ "btn-primary" : scene.view == "position" }' ng-click="scene.view = 'position'" type="button" class="btn btn-default">Position</button>
-	    <button  ng-class='{ "btn-primary" : scene.view == "camera" }' ng-click="scene.view = 'camera'" type="button" class="btn btn-default">Camera</button>
-	    <button  ng-class='{ "btn-primary" : scene.view == "initialRotation" }' ng-click="scene.view = 'initialRotation'" type="button" class="btn btn-default">Initial Rotation</button>
-	  </div>
-
-	  <div ng-show="'rotate' == scene.view" scene.class="input-group input-group-sm">
-	    <h4>Model Rotation</h4>
-	    <small>Optional. Rotation of the model during the scene (degrees)</small>
-	    <div class="form-group">
-	      <input ng-model="scene.currentCharacter.rotation.x" placeholder="Rotate x">
-	      <input ng-model="scene.currentCharacter.rotation.y" placeholder="Rotate y">
-	      <input ng-model="scene.currentCharacter.rotation.z" placeholder="Rotate z">
+	  <div ng-show="scene.expanded">
+	    <div>
+	      <h4>Caption:</h4>
+	      <input ng-model="scene.caption" placeholder="Caption for comic">
 	    </div>
-	  </div>
-	  <div ng-show="'initialRotation' == scene.view" scene.class="input-group input-group-sm">
-	    <h4>Model Starting Rotation</h4>
-	    <small>Optional. Initial rotation of the model (degrees)</small>
-	      <div class="form-group">
-		<input ng-model="scene.currentCharacter.initialRotation.x" placeholder="Rotate x">
-		<input ng-model="scene.currentCharacter.initialRotation.y" placeholder="Rotate y">
-		<input ng-model="scene.currentCharacter.initialRotation.z" placeholder="Rotate z">
-	      </div>
-	    </form>
-	  </div>
-	  <div ng-show="'position' == scene.view">
-	    <h4>Position in Scene</h4>
-	    <small>Optional. Position of the model in the scene</small>
-	    <form class="form-inline">
-	      <div class="form-group">
-		<input ng-model="scene.currentCharacter.position.x" placeholder="Position x">
-		<input ng-model="scene.currentCharacter.position.y" placeholder="Position y">
-		<input ng-model="scene.currentCharacter.position.z" placeholder="Position z">
-	      </div>
-	    </form>
-	  </div>
-	  <div ng-show="'camera' == scene.view">
+	    <div>
+	      <h4>Duration:</h4>
+	      <input ng-model="scene.duration" placeholder="Duration, defaults to 5">
+	    </div>
+	    <div>
 	    <h4>Camera</h4>
 	    <small>Optional. Camera starts at 0,0,0 and then animates to this final destination</small>
 	    <form class="form-inline">
@@ -155,44 +109,84 @@
 	      </div>
 	    </form>
 	  </div>
-	  <div>
-	    <a class="btn btn-large" ng-click="remove($index)">Delete</a>
-	    <a class="btn btn-large" target="player" ng-href="player.html?comic={{previewSceneLink(scene)}}">Preview Scene</a>
-	  </div>
 
-	  
-	  <div class="modalWrapper" ng-style="modal">
-	    <div class="backdrop" ng-style="modal"></div>
-	    <div class="modal" ng-style="modal">
-	      <h2>Choose character...</h2>
-	      <input class="form-control" ng-model="search" placeholder="Filter by name">
-	      <div class="character" ng-click="selectCharacter(character)" ng-repeat="character in characters | filter:search"> {{ character }} </div>
+	    <div>
+	      3D Model(s):
+	      <button class"btn btn-large" ng-click="addCharacter(scene)">+</button>
+	      <span class="character-gallery">
+		<div ng-class="{ 'selected' : character == scene.currentCharacter }" ng-click="setCurrentCharacter( scene, character)" ng-repeat="character in scene.models track by $index" class="character"> {{ character.name }} </div>
+	      </span>
+	    </div>
+	      
+	    <div class="btn-group" role="group" aria-label="...">
+	      <button ng-class='{ "btn-primary" : scene.view == "rotate" }' ng-click="scene.view = 'rotate'" type="button" class="btn btn-default">Rotate</button>
+	      <button ng-class='{ "btn-primary" : scene.view == "position" }' ng-click="scene.view = 'position'" type="button" class="btn btn-default">Position</button>
+	      <button  ng-class='{ "btn-primary" : scene.view == "initialRotation" }' ng-click="scene.view = 'initialRotation'" type="button" class="btn btn-default">Initial Rotation</button>
+	    </div>
+	    
+	    <div ng-show="'rotate' == scene.view" scene.class="input-group input-group-sm">
+	      <h4>Model Rotation</h4>
+	      <small>Optional. Rotation of the model during the scene (degrees)</small>
+	      <div class="form-group">
+		<input ng-model="scene.currentCharacter.rotation.x" placeholder="Rotate x">
+		<input ng-model="scene.currentCharacter.rotation.y" placeholder="Rotate y">
+		<input ng-model="scene.currentCharacter.rotation.z" placeholder="Rotate z">
+	      </div>
+	    </div>
+	    <div ng-show="'initialRotation' == scene.view" scene.class="input-group input-group-sm">
+	      <h4>Model Starting Rotation</h4>
+	      <small>Optional. Initial rotation of the model (degrees)</small>
+	      <div class="form-group">
+		<input ng-model="scene.currentCharacter.initialRotation.x" placeholder="Rotate x">
+		<input ng-model="scene.currentCharacter.initialRotation.y" placeholder="Rotate y">
+		<input ng-model="scene.currentCharacter.initialRotation.z" placeholder="Rotate z">
+	      </div>
+	    </div>
+	    <div ng-show="'position' == scene.view">
+	      <h4>Position in Scene</h4>
+	      <small>Optional. Position of the model in the scene</small>
+	      <div class="form-group">
+		<input ng-model="scene.currentCharacter.position.x" placeholder="Position x">
+		<input ng-model="scene.currentCharacter.position.y" placeholder="Position y">
+		<input ng-model="scene.currentCharacter.position.z" placeholder="Position z">
+	      </div>
+	    </div>
+	    <div>
+	      <a class="btn btn-large" ng-click="remove($index)">Delete</a>
+	      <a class="btn btn-large" target="player" ng-href="player.html?comic={{previewSceneLink(scene)}}">Preview Scene</a>
+	    </div>
+	    
+	    <div class="modalWrapper" ng-style="modal">
+	      <div class="backdrop" ng-style="modal"></div>
+	      <div class="modal" ng-style="modal">
+		<h2>Choose character...</h2>
+		<input class="form-control" ng-model="search" placeholder="Filter by name">
+		<div class="character" ng-click="selectCharacter(character)" ng-repeat="character in characters | filter:search">
+		  {{ character }}
+		</div>
+	      </div>
 	    </div>
 	  </div>
-	  
+	</div>
+      
+	<h3 ng-click="code = !code">Show/Hide Yume code</h3>
+	<div ng-show="code">
+	  <pre>
+var data = {{ scenes | json }};
+yume = new Yume();
+yume.load( data );
+yume.setup( "comic" );
+	    
+&lt;div id="container"&gt;
+&lt;div id="caption"&gt; &lt;/div&gt;
+&lt;div id="comic"&gt; &lt;/div&gt;
+&lt;div class="progression" id="back"&gt; Back &lt;/div&gt;
+&lt;div class="progression" id="next"&gt; Next &lt;/div&gt;
+&lt;/div&gt;
+	  </pre>
 	</div>
       </div>
       
-<h3 ng-click="code = !code">Show/Hide Yume code</h3>
-<div ng-show="code">
-  <pre>
-    &lt;script&gt;
-    var data = {{ scenes | json }};
-    yume = new Yume();
-    yume.load( data );
-    yume.setup( "comic" );
-    &lt;/script&gt;
-    
-    &lt;div id="container"&gt;
-    &lt;div id="caption"&gt; &lt;/div&gt;
-    &lt;div id="comic"&gt; &lt;/div&gt;
-    &lt;div class="progression" id="back"&gt; Back &lt;/div&gt;
-    &lt;div class="progression" id="next"&gt; Next &lt;/div&gt;
-    &lt;/div&gt;
-  </pre>
-</div>
-      
-
       <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
       <script>
 	if( !window.angular ) {
@@ -202,17 +196,16 @@
       </script>
       
       <script src="builder.js"></script>
-
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-84583342-1', 'auto');
-  ga('send', 'pageview');
-
-</script>
+      
+      <script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	
+	ga('create', 'UA-84583342-1', 'auto');
+	ga('send', 'pageview');
+      </script>
 
 </body>
 </html>

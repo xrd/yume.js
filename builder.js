@@ -57,7 +57,7 @@ mod.controller( 'BuilderCtrl', [ '$scope', '$location', function( $scope, $locat
     }
     
     $scope.selectCharacter = function( character ) {
-	$scope.selectedScene.models.push( { src: character } )
+	$scope.selectedScene.models.push( { name: character } )
 	$scope.selectedScene = undefined
 	$scope.modal = $scope.backdrop = undefined
     }
