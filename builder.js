@@ -4,6 +4,19 @@ mod.controller( 'BuilderCtrl', [ '$scope', '$location', function( $scope, $locat
 
     $scope.scenes = []
 
+    $scope.characters = [
+	"man",
+	"face",
+	"mobster",
+	"monitor",
+	"phone",
+	"raptor",
+	"spinosaurus",
+	"trex",
+	"parasaur",
+	"pteranodon"
+    ];
+    
     $scope.encoded = "";
 
     $scope.init = function() {
@@ -25,6 +38,28 @@ mod.controller( 'BuilderCtrl', [ '$scope', '$location', function( $scope, $locat
 
     $scope.add = function() {
 	$scope.scenes.push( { models: [], duration: 5 } );
+	if( 1 == $scope.scenes.length ) {
+	    $scope.scenes[0].expanded = true;
+	}
+    }
+
+    modalStyle = { display: "inline" }
+    backdropStyle = { display: "inline" }
+    
+    $scope.addCharacter = function( scene ) {
+	$scope.modal = modalStyle
+	$scope.backdrop = backdropStyle
+	$scope.selectedScene = scene
+    }
+
+    $scope.setCurrentCharacter = function( scene, character ) {
+	scene.currentCharacter = character;
+    }
+    
+    $scope.selectCharacter = function( character ) {
+	$scope.selectedScene.models.push( { name: character } )
+	$scope.selectedScene = undefined
+	$scope.modal = $scope.backdrop = undefined
     }
 
     $scope.remove = function( index ) {
