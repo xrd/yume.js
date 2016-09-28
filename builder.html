@@ -1,15 +1,36 @@
-<!DOCTYPE html>
 <html>
 
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link href="bootstrap.css" rel="stylesheet"/>
-
-    <!-- link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
     <style>
 
+      .close {
+      position: absolute;;
+      right: 50px;
+      top: 50px;
+      border: 3px solid black;
+      }
+      
+      .sceneActions {
+      padding-top: 0.5em;
+      padding-bottom: 0.5em;
+      }
+
+      .models {
+      padding-bottom: 0.5em;
+      }
+
+      .coordinates {
+      padding-bottom: 0.3em;
+      }
+
+      .details {
+      padding-bottom: 0.3em;
+      }
+      
       .character-gallery {
       width: 100%;
       height: 60px;
@@ -22,18 +43,16 @@
 
       .character-gallery .selected {
       font-weight: bold;
-      background-color: red;
       }
       
       .character-gallery .character {
-      padding-right: 0.3em;
-      height: 28px;
       display: inline-block;
-      border-top: none;
       position: relative;
-      cursor: pointer;
+      height: 50px;
       white-space: nowrap;
-      background:#fff;
+      font-size: 1.8em;
+      padding: 0.3em;
+      border: 1px solid grey;
       }
 
       .backdrop {
@@ -49,10 +68,6 @@
       opacity: 0.6;
       }
 
-      .character {
-      font-size: 2em;
-      }
-      
       .modalWrapper {
       position: absolute;
       width: 100%;
@@ -74,128 +89,170 @@
       background-color: white;
       z-index: 1001;
       }
+
+      .modal .character {
+      font-size: 2em;
+      }
       
     </style>
   </head>
 
   <body>
-    
+
     <div class="container" ng-app="builder">
       <div ng-controller="BuilderCtrl" ng-init="init()">
 	<button class="btn btn-large" ng-click="add()">Add scene</button>
 	<a class="btn btn-large" target="player" ng-href="player.html?comic={{encoded}}">Play</a>
-	<div class="scene" ng-repeat="scene in scenes">
-	  <h3>Scene: {{ ( scene.caption && ( '"' + scene.caption + '"' ) ) || ($index+1) }}
-	    <span ng-show="scene.expanded" ng-click="scene.expanded = !scene.expanded" class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
-	    <span ng-hide="scene.expanded" ng-click="scene.expanded = !scene.expanded" class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
-	  </h3>
-	  
-	  <div ng-show="scene.expanded">
-	    <div>
-	      <h4>Caption:</h4>
-	      <input ng-model="scene.caption" placeholder="Caption for comic">
-	    </div>
-	    <div>
-	      <h4>Duration:</h4>
-	      <input ng-model="scene.duration" placeholder="Duration, defaults to 5">
-	    </div>
-	    <div>
+      </br>
+      <div class="scene" ng-repeat="scene in scenes">
+	<h3>Scene: {{ ( scene.caption && ( '"' + scene.caption + '"' ) ) || ($index+1) }}
+	  <span ng-show="scene.expanded" ng-click="scene.expanded = !scene.expanded" class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+	  <span ng-hide="scene.expanded" ng-click="scene.expanded = !scene.expanded" class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+	</h3>
+	
+	<div ng-show="scene.expanded">
+	  <div class="input-group details">
+	    <div class="input-group-addon">Caption</div>
+	    <input class="form-control" ng-model="scene.caption" placeholder="Caption for comic">
+	  </div>
+	  <div class="input-group details">
+	    <div class="input-group-addon">Duration</div>
+	    <input class="form-control" ng-model="scene.duration" placeholder="Duration, defaults to 5">
+	  </div>
+	  <div>
 	    <h4>Camera</h4>
 	    <small>Optional. Camera starts at 0,0,0 and then animates to this final destination</small>
-	    <form class="form-inline">
-	      <div class="form-group">
-		<input ng-model="scene.camera.x" placeholder="Camera destination x">
-		<input ng-model="scene.camera.y" placeholder="Camera destination y">
-		<input ng-model="scene.camera.z" placeholder="Camera destination z">
+	    <div class="row">
+	      <div class="col-xs-4">
+		<input class="form-control" ng-model="scene.camera.x" placeholder="Camera destination x">
 	      </div>
-	    </form>
+	      <div class="col-xs-4">
+		<input class="form-control" ng-model="scene.camera.y" placeholder="Camera destination y">
+	      </div>
+	      <div class="col-xs-4">
+		<input class="form-control" ng-model="scene.camera.z" placeholder="Camera destination z">
+	      </div>
+	    </div>
 	  </div>
-
-	    <div>
-	      3D Model(s):
-	      <button class"btn btn-large" ng-click="addCharacter(scene)">+</button>
-	      <span class="character-gallery">
-		<div ng-class="{ 'selected' : character == scene.currentCharacter }" ng-click="setCurrentCharacter( scene, character)" ng-repeat="character in scene.models track by $index" class="character"> {{ character.name }} </div>
-	      </span>
+	  
+	  <div class="models">
+	    <div class="row">
+	      <div class="col-xs-12">
+		<h4>3D Model(s): {{ scene.models.length }} in scene</h4>
+		<div ng-hide="scene.currentCharacter">
+		  <div ng-hide="scene.models.length">
+		    Please add a character and then optionally select it to edit attributes
+		  </div>
+		  <div ng-show="scene.models.length">
+		    Select one of the characters below to edit attributes.
+		  </div>
+		</div>
+		<span class="character-gallery">
+		  <div class="btn-group" role="group" aria-label="...">
+		    <div class="character" ng-click="addCharacter(scene)"> + </div>
+		    <div ng-class="{ 'selected' : character == scene.currentCharacter }" ng-click="setCurrentCharacter( scene, character, $index )" ng-repeat="character in scene.models track by $index" class="character"> {{ character.name }} </div>
+		  </div>
+		</span>
+	      </div>
 	    </div>
+	    
+	    <div ng-show="scene.currentCharacter">
+	      <div class="btn-group" role="group" aria-label="...">
+		<button ng-class='{ "btn-primary" : scene.view == "rotate" }' ng-click="scene.view = 'rotate'" type="button" class="btn btn-default">Rotate</button>
+		<button ng-class='{ "btn-primary" : scene.view == "position" }' ng-click="scene.view = 'position'" type="button" class="btn btn-default">Position</button>
+		<button  ng-class='{ "btn-primary" : scene.view == "initialRotation" }' ng-click="scene.view = 'initialRotation'" type="button" class="btn btn-default">Initial Rotation</button>
+	      </div>
 	      
-	    <div class="btn-group" role="group" aria-label="...">
-	      <button ng-class='{ "btn-primary" : scene.view == "rotate" }' ng-click="scene.view = 'rotate'" type="button" class="btn btn-default">Rotate</button>
-	      <button ng-class='{ "btn-primary" : scene.view == "position" }' ng-click="scene.view = 'position'" type="button" class="btn btn-default">Position</button>
-	      <button  ng-class='{ "btn-primary" : scene.view == "initialRotation" }' ng-click="scene.view = 'initialRotation'" type="button" class="btn btn-default">Initial Rotation</button>
-	    </div>
-	    
-	    <div ng-show="'rotate' == scene.view" scene.class="input-group input-group-sm">
-	      <h4>Model Rotation</h4>
-	      <small>Optional. Rotation of the model during the scene (degrees)</small>
-	      <div class="form-group">
-		<input ng-model="scene.currentCharacter.rotation.x" placeholder="Rotate x">
-		<input ng-model="scene.currentCharacter.rotation.y" placeholder="Rotate y">
-		<input ng-model="scene.currentCharacter.rotation.z" placeholder="Rotate z">
-	      </div>
-	    </div>
-	    <div ng-show="'initialRotation' == scene.view" scene.class="input-group input-group-sm">
-	      <h4>Model Starting Rotation</h4>
-	      <small>Optional. Initial rotation of the model (degrees)</small>
-	      <div class="form-group">
-		<input ng-model="scene.currentCharacter.initialRotation.x" placeholder="Rotate x">
-		<input ng-model="scene.currentCharacter.initialRotation.y" placeholder="Rotate y">
-		<input ng-model="scene.currentCharacter.initialRotation.z" placeholder="Rotate z">
-	      </div>
-	    </div>
-	    <div ng-show="'position' == scene.view">
-	      <h4>Position in Scene</h4>
-	      <small>Optional. Position of the model in the scene</small>
-	      <div class="form-group">
-		<input ng-model="scene.currentCharacter.position.x" placeholder="Position x">
-		<input ng-model="scene.currentCharacter.position.y" placeholder="Position y">
-		<input ng-model="scene.currentCharacter.position.z" placeholder="Position z">
-	      </div>
-	    </div>
-	    <div>
-	      <a class="btn btn-large" ng-click="remove($index)">Delete</a>
-	      <a class="btn btn-large" target="player" ng-href="player.html?comic={{previewSceneLink(scene)}}">Preview Scene</a>
-	    </div>
-	    
-	    <div class="modalWrapper" ng-style="modal">
-	      <div class="backdrop" ng-style="modal"></div>
-	      <div class="modal" ng-style="modal">
-		<h2>Choose character...</h2>
-		<input class="form-control" ng-model="search" placeholder="Filter by name">
-		<div class="character" ng-click="selectCharacter(character)" ng-repeat="character in characters | filter:search">
-		  {{ character }}
+	      <div ng-show="'rotate' == scene.view" class="coordinates">
+		<h4>Model Rotation</h4>
+		<small>Optional. Rotation of the model during the scene (degrees)</small>
+		<div class="row">
+		  <div class="col-xs-4">
+		    <input class="form-control" ng-model="scene.currentCharacter.rotation.x" placeholder="Rotate x">
+		  </div>
+		  <div class="col-xs-4">
+		    <input class="form-control" ng-model="scene.currentCharacter.rotation.y" placeholder="Rotate y">
+		  </div>
+		  <div class="col-xs-4">
+		    <input class="form-control" ng-model="scene.currentCharacter.rotation.z" placeholder="Rotate z">
+		  </div>
 		</div>
 	      </div>
+	      <div ng-show="'initialRotation' == scene.view" class="coordinates">
+		<h4>Model Starting Rotation</h4>
+		<small>Optional. Initial rotation of the model (degrees)</small>
+		<div class="row">
+		  <div class="col-xs-4">
+		    <input class="form-control" ng-model="scene.currentCharacter.initialRotation.x" placeholder="Rotate x">
+		  </div>
+		  <div class="col-xs-4">
+		    <input class="form-control" ng-model="scene.currentCharacter.initialRotation.y" placeholder="Rotate y">
+		  </div>
+		  <div class="col-xs-4">
+		    <input class="form-control" ng-model="scene.currentCharacter.initialRotation.z" placeholder="Rotate z">
+		  </div>
+		</div>
+	      </div>
+	      <div ng-show="'position' == scene.view" class="coordinates">
+		<h4>Position in Scene</h4>
+		<small>Optional. Position of the model in the scene</small>
+		<div class="row">
+		  <div class="col-xs-4">
+		    <input class="form-control" ng-model="scene.currentCharacter.position.x" placeholder="Position x">
+		  </div>
+		  <div class="col-xs-4">
+		    <input class="form-control" ng-model="scene.currentCharacter.position.y" placeholder="Position y">
+		  </div>
+		  <div class="col-xs-4">
+		    <input class="form-control" ng-model="scene.currentCharacter.position.z" placeholder="Position z">
+		  </div>
+		</div>
+	      </div>
+	      
+	      <button class="btn" ng-click="removeCharacter( scene )">Remove Character</button>
+	      
 	    </div>
 	  </div>
+	  <div class="sceneActions">
+	    <button class="btn btn-large" ng-click="remove($index)">Delete Scene</button>
+	    <a class="btn btn-large" target="player" ng-href="player.html?comic={{previewSceneLink(scene)}}">Preview Scene</a>
+	  </div>
 	</div>
-      
-	<h3 ng-click="code = !code">Show/Hide Yume code</h3>
-	<div ng-show="code">
-	  <pre>
-var data = {{ scenes | json }};
-yume = new Yume();
-yume.load( data );
-yume.setup( "comic" );
-	    
-&lt;div id="container"&gt;
-&lt;div id="caption"&gt; &lt;/div&gt;
-&lt;div id="comic"&gt; &lt;/div&gt;
-&lt;div class="progression" id="back"&gt; Back &lt;/div&gt;
-&lt;div class="progression" id="next"&gt; Next &lt;/div&gt;
-&lt;/div&gt;
-	  </pre>
+	  
+	<div class="modalWrapper" ng-style="modal">
+	  <div class="backdrop" ng-style="modal"></div>
+	  <div class="modal" ng-style="modal">
+	    <h2>Choose character...</h2>
+	    <input class="form-control" ng-model="search" placeholder="Filter by name">
+	    <div class="character" ng-click="selectCharacter(character)" ng-repeat="character in characters | filter:search">
+	      {{ character }}
+	    </div>
+	    <div class="close" ng-click="closeModal()">X<div>
+	  </div>
 	</div>
       </div>
       
-      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
-      <script>
-	if( !window.angular ) {
-	console.log( "Using local AngularJS" );
-	document.write( "<script src='angular.js'></scr" + "ipt>" );
-	}
-      </script>
       
+      <h3>Yume code</h3>
+      <pre>
+	&lt;script&gt;
+	var data = {{ scenes | json }};
+	yume = new Yume();
+	yume.load( data );
+	yume.setup( "comic" );
+	&lt;/script&gt;
+	
+	&lt;div id="container"&gt;
+	&lt;div id="caption"&gt; &lt;/div&gt;
+	&lt;div id="comic"&gt; &lt;/div&gt;
+	&lt;div class="progression" id="back"&gt; Back &lt;/div&gt;
+	&lt;div class="progression" id="next"&gt; Next &lt;/div&gt;
+	&lt;/div&gt;
+	
+      </pre>
+      
+      
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
       <script src="builder.js"></script>
       
       <script>
@@ -206,7 +263,8 @@ yume.setup( "comic" );
 	
 	ga('create', 'UA-84583342-1', 'auto');
 	ga('send', 'pageview');
+	
       </script>
-
-</body>
+      
+  </body>
 </html>
