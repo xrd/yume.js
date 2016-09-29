@@ -13,6 +13,8 @@ And, this is a place where I hope we can start writing stories that involve a la
 are characters in 12.5% of children's books, while characters of other races constitute only 7.5% African-American, 3.3% Asian-Americans, 2.4% Latinx,and 0.9% American Indians/First World Nations. 73.3% of characters are white, like me,
 but I want diverse stories for my diverse children.
 
+Usage of P5 was promoted by the intriguing new online book [Programming Design Systems](https://programmingdesignsystems.com/) by Rune Madsen.
+
 ## Getting started
 
 Use the [builder](https://xrd.github.com/yume.js/builder.html) to play with comics from your mobile device.
