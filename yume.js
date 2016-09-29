@@ -203,7 +203,7 @@ function Yume() {
 	    }
 
 	    if( data ) {
-		var parsdDur = parseInt( data.duration ) || 5;
+		var parsedDur = parseInt( data.duration ) || 5;
 		var sceneDuration = parsedDur * MS_PER_SECOND;
 		if( !sceneIsOver( sceneDuration ) ) {
 		    if( data.camera ) {
