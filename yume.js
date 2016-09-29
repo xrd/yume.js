@@ -154,7 +154,8 @@ function Yume() {
 	function easeCamera( p ) {
 	    var c = data.camera || {};
 	    var x = c.x || 0, y = c.y || 0, z = c.z || 0;
-	    var dur = data.duration * MS_PER_SECOND;
+	    var parsedDur = parseInt( data.duration ) || 5;
+	    var dur = parsedDur * MS_PER_SECOND;
 	    camX = ease( x, dur );
 	    camY = ease( y, dur );
 	    camZ = ease( z, dur );
@@ -202,7 +203,8 @@ function Yume() {
 	    }
 
 	    if( data ) {
-		var sceneDuration = data.duration * MS_PER_SECOND;
+		var parsdDur = parseInt( data.duration ) || 5;
+		var sceneDuration = parsedDur * MS_PER_SECOND;
 		if( !sceneIsOver( sceneDuration ) ) {
 		    if( data.camera ) {
 			easeCamera( p );
