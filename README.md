@@ -15,7 +15,6 @@ but I want diverse stories for my diverse children.
 
 Usage of P5 was promoted by the intriguing new online book [Programming Design Systems](https://programmingdesignsystems.com/) by Rune Madsen.
 
-
 ## Getting started
 
 Use the [builder](https://xrd.github.com/yume.js/builder.html) to play with comics from your mobile device.
