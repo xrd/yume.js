@@ -17,6 +17,8 @@
 
 <script>
 var provider = new firebase.auth.GithubAuthProvider();
+// Grant scopes, we can post images there...
+provider.addScope( "gist" );
 
 function doIt() {
 firebase.auth().signInWithPopup(provider).then(function(result) {
