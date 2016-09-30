@@ -139,8 +139,14 @@ function Yume() {
 	p.preload = function() {
 	    if( data && data.models && data.models.length > 0 ) {
 		for( var i = 0; i < data.models.length; i++ ) {
-		    var name = data.models[i].name;
-		    data.models[i].model = p.loadModel( name + ".obj", true );
+		    let model = data.models[i];
+		    var name = model.name;
+		    if( "image" != model.name ) {
+			data.models[i].model = p.loadModel( name + ".obj", true );
+		    }
+		    else {
+			data.models[i].image = p.loadImage( model.name + ".png", true );
+		    }
 		}
 	    }
 	}
@@ -226,7 +232,7 @@ function Yume() {
 		    p.pointLight( pl.x, pl.y, pl.z, pl.x1, pl.y2, pl.z2 );
 		}
 		else {
-		    p.pointLight( 200, 200, 200, 89, 45, 0);
+		    // p.pointLight( 200, 200, 200, 89, 45, 0);
 		}
 		
 		if( data.background ) {
@@ -279,7 +285,19 @@ function Yume() {
 		    p.rotateX( p.radians( x ) || 0 ); 
 		    p.rotateY( p.radians( y ) || 0 );
 		    p.rotateZ( p.radians( z ) || 0 );
-		    p.model( data.models[i].model );
+
+		    if( "image" == data.models[i].name ) {
+			let img = data.models[i].image;
+			p.texture( img );
+			// console.log( "Image", img );
+			p.scale( 0.4 );
+
+			p.box( img.width, img.height, 1 );
+			//p.image( data.models[i].image );
+		    }
+		    else {
+			p.model( data.models[i].model );
+		    }
 
 		    p.pop();
 		}

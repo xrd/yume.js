@@ -14,7 +14,8 @@ mod.controller( 'BuilderCtrl', [ '$scope', '$location', function( $scope, $locat
 	"spinosaurus",
 	"trex",
 	"parasaur",
-	"pteranodon"
+	"pteranodon",
+	"image"
     ];
     
     $scope.encoded = "";
@@ -41,9 +42,37 @@ mod.controller( 'BuilderCtrl', [ '$scope', '$location', function( $scope, $locat
 	if( 1 == $scope.scenes.length ) {
 	    $scope.scenes[0].expanded = true;
 	}
+
+	var theImage = undefined;
+	
+	let image = document.getElementById( "image" );
+	image.onchange = something;
+	function something( evt, stuff ) {
+	    var files = evt.target.files; // FileList object
+	    // Loop through the FileList and render image files as thumbnails.
+	    for (var i = 0, f; f = files[i]; i++) {
+		// Only process image files.
+		if (!f.type.match('image.*')) {
+		    continue;
+		}
+		var reader = new FileReader();
+		// Closure to capture the file information.
+		reader.onload = function( e ) {
+		    // Render thumbnail.
+		    var output = document.getElementById( "output" );
+		    window.theImage = e.target.result;
+		}
+		reader.readAsDataURL( f );
+	    }
+	}
+
     }
 
     displayedInlineStyle = { display: "inline" }
+    
+    $scope.slurpImageIntoScene = function( scene ) {
+	scene.models.push( { name: 'image', data: window.theImage, type: 'image' } );
+    }
     
     $scope.addCharacter = function( scene ) {
 	$scope.search = undefined;
@@ -82,4 +111,7 @@ mod.controller( 'BuilderCtrl', [ '$scope', '$location', function( $scope, $locat
 	}
     }
 
+
 } ] );
+
+
