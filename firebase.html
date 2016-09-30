@@ -1,0 +1,48 @@
+<html>
+
+<body>
+
+<script src="https://www.gstatic.com/firebasejs/3.4.1/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyA9H3GvXqSwx1tiHNwaLbyxfSuudN7Ar6M",
+    authDomain: "yumejs-42402.firebaseapp.com",
+    databaseURL: "https://yumejs-42402.firebaseio.com",
+    storageBucket: "",
+    messagingSenderId: "687411333366"
+  };
+  firebase.initializeApp(config);
+</script>
+
+<script>
+var provider = new firebase.auth.GithubAuthProvider();
+
+function doIt() {
+firebase.auth().signInWithPopup(provider).then(function(result) {
+  // This gives you a GitHub Access Token. You can use it to access the GitHub API.
+  var token = result.credential.accessToken;
+  // The signed-in user info.
+  var user = result.user;
+console.log( "We got logged in" );
+  // ...
+}).catch(function(error) {
+  // Handle Errors here.
+console.error( "Login failed" );
+  var errorCode = error.code;
+  var errorMessage = error.message;
+  // The email of the user's account used.
+  var email = error.email;
+  // The firebase.auth.AuthCredential type that was used.
+  var credential = error.credential;
+  // ...
+});
+}
+
+</script>
+
+<button onclick="doIt()">Do It</button>
+
+</body>
+
+</html>
