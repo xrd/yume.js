@@ -44,11 +44,13 @@ mod.controller( 'BuilderCtrl', [ '$scope', '$location', function( $scope, $locat
     }
 
     displayedInlineStyle = { display: "inline" }
+    noScroll = { overflow: 'hidden' }
     
     $scope.addCharacter = function( scene ) {
 	$scope.search = undefined;
 	$scope.modal = displayedInlineStyle;
 	$scope.backdrop = displayedInlineStyle;
+	$scope.noscroll = noScroll;
 	$scope.selectedScene = scene;
     }
 
@@ -64,7 +66,7 @@ mod.controller( 'BuilderCtrl', [ '$scope', '$location', function( $scope, $locat
     }
 
     $scope.closeModal = function() {
-	$scope.modal = $scope.backdrop = undefined
+	$scope.modal = $scope.backdrop = $scope.noscroll = undefined
     }
     
     $scope.remove = function( index ) {

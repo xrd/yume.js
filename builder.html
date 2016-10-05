@@ -104,7 +104,7 @@
 	<button class="btn btn-large" ng-click="add()">Add scene</button>
 	<a class="btn btn-large" target="player" ng-href="player.html?comic={{encoded}}">Play</a>
       </br>
-      <div class="scene" ng-repeat="scene in scenes">
+      <div class="scene" ng-repeat="scene in scenes" ng-style="noscroll">
 	<h3>Scene: {{ ( scene.caption && ( '"' + scene.caption + '"' ) ) || ($index+1) }}
 	  <span ng-show="scene.expanded" ng-click="scene.expanded = !scene.expanded" class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
 	  <span ng-hide="scene.expanded" ng-click="scene.expanded = !scene.expanded" class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
