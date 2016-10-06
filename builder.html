@@ -103,6 +103,8 @@
       <div ng-controller="BuilderCtrl" ng-init="init()">
 	<button class="btn btn-large" ng-click="add()">Add scene</button>
 	<a class="btn btn-large" target="player" ng-href="player.html?comic={{encoded}}">Play</a>
+	Length: {{ encoded.length }}
+	<div ng-show="encoded.length > 2000">Warning: URLs longer than 2000 characters are problematic</div>
       </br>
       <div class="scene" ng-repeat="scene in scenes">
 	<h3>Scene: {{ ( scene.caption && ( '"' + scene.caption + '"' ) ) || ($index+1) }}
