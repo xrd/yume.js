@@ -24,7 +24,7 @@ mod.controller( 'BuilderCtrl', [ '$scope', '$location', '$http', function( $scop
 	var decoded = atob( search.comic );
 	$scope.scenes = JSON.parse( decoded );
 
-	$http.get( '/characters.json' ).then( function( response ) {
+	$http.get( 'characters.json' ).then( function( response ) {
 	    $scope.characters = response.data;
 	} );
     }
