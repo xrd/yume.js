@@ -1,6 +1,6 @@
 var mod = angular.module( 'builder', [] );
 
-mod.controller( 'BuilderCtrl', [ '$scope', '$location', function( $scope, $location ) {
+mod.controller( 'BuilderCtrl', [ '$scope', '$location', '$http', function( $scope, $location, $http ) {
 
     $scope.scenes = []
 
@@ -23,6 +23,10 @@ mod.controller( 'BuilderCtrl', [ '$scope', '$location', function( $scope, $locat
 	var search = $location.search();
 	var decoded = atob( search.comic );
 	$scope.scenes = JSON.parse( decoded );
+
+	$http.get( '/characters.json' ).then( function( response ) {
+	    $scope.characters = response.data;
+	} );
     }
 
     $scope.previewSceneLink = function( scene ) {
