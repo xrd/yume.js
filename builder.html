@@ -123,15 +123,16 @@
 	<button class="btn btn-large" ng-click="preferences()">Preferences</button>
 	<a class="btn btn-large" target="player" ng-href="player.html?comic={{encoded}}">Play</a>
 	<span ng-show="scenes.length">Length: {{ encoded.length }}</span>
-	<div ng-hide="scenes.length" class="explanation">
-	  <p>
-	  Welcome to <b>Yume.js</b>. Yume (夢) means dream in Japanese. 
-	  <b>Yume.js</b> allows you to make comics from your mobile phone.
+	<div ng-hide="scenes.length">
+	  <p class="explanation">
+	    Welcome to <b>Yume.js</b>. Yume (夢) means dream in Japanese. 
+	    <b>Yume.js</b> allows you to make comics from your mobile phone.
 	  </p>
+	  
 	  <p>
 	    This <a ng-click="showVideo()">two minute video shows</a> how it all works.
 	  </p>
-
+	  
 	  <p>
 	    To start, just click the <b>"Add Scene"</b> button to add your first
 	    scene. You can add as many scenes as you want. Then, add a 
