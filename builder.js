@@ -21,7 +21,7 @@ mod.controller( 'BuilderCtrl', [ '$scope', '$location', '$http', '$uibModal', '$
     
     $scope.encoded = "";
 
-    $scope.showVideo = function( size, parentSelector ) {
+    $scope.showVideo = function( parentSelector ) {
 	console.log( "Showing video..." );
 	// $ctrl.open = function (size, parentSelector) {
 	var parentElem = parentSelector ? 
@@ -33,8 +33,8 @@ mod.controller( 'BuilderCtrl', [ '$scope', '$location', '$http', '$uibModal', '$
 	    templateUrl: 'youtube.html',
 	    controller: 'ModalInstanceCtrl',
 	    controllerAs: '$ctrl',
-	    size: size,
-	    appendTo: parentElem
+	    size: 'lg'
+	    // appendTo: parentElem
 	});
 	
 	modalInstance.result.then(function (selectedItem) {
