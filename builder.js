@@ -1,6 +1,8 @@
-var mod = angular.module( 'builder', [] );
+var mod = angular.module( 'builder', [ 'ui.bootstrap' ] );
 
-mod.controller( 'BuilderCtrl', [ '$scope', '$location', '$http', function( $scope, $location, $http ) {
+mod.controller( 'BuilderCtrl', [ '$scope', '$location', '$http', '$uibModal', '$document', function( $scope, $location, $http, $uibModal, $document ) {
+
+    var $ctrl = this;
 
     $scope.scenes = []
 
@@ -18,6 +20,29 @@ mod.controller( 'BuilderCtrl', [ '$scope', '$location', '$http', function( $scop
     ];
     
     $scope.encoded = "";
+
+    $scope.showVideo = function( size, parentSelector ) {
+	console.log( "Showing video..." );
+	// $ctrl.open = function (size, parentSelector) {
+	var parentElem = parentSelector ? 
+	    angular.element($document[0].querySelector('.modal-demo ' + parentSelector)) : undefined;
+	var modalInstance = $uibModal.open({
+	    animation: $ctrl.animationsEnabled,
+	    ariaLabelledBy: 'modal-title',
+	    ariaDescribedBy: 'modal-body',
+	    templateUrl: 'youtube.html',
+	    controller: 'ModalInstanceCtrl',
+	    controllerAs: '$ctrl',
+	    size: size,
+	    appendTo: parentElem
+	});
+	
+	modalInstance.result.then(function (selectedItem) {
+	    $ctrl.selected = selectedItem;
+	}, function () {
+	    $log.info('Modal dismissed at: ' + new Date());
+	});
+    };
 
     $scope.init = function() {
 	var search = $location.search();
@@ -87,3 +112,15 @@ mod.controller( 'BuilderCtrl', [ '$scope', '$location', '$http', function( $scop
     }
 
 } ] );
+
+mod.controller( 'ModalInstanceCtrl', function ($uibModalInstance ) {
+  var $ctrl = this;
+
+  $ctrl.ok = function () {
+    $uibModalInstance.close();
+  };
+
+  $ctrl.cancel = function () {
+    $uibModalInstance.dismiss('cancel');
+  };
+});
