@@ -105,7 +105,22 @@
 
     <div class="container" ng-app="builder">
       <div ng-controller="BuilderCtrl" ng-init="init()">
-	<button class="btn btn-large" ng-click="add()">Add scene</button>
+
+	<script type="text/ng-template" id="youtube.html">
+          <div class="modal-header">
+	    <h3 class="modal-title" id="modal-title">How to use the Yume.js Builder</h3>
+          </div>
+          <div class="modal-body" id="modal-body">
+	    <iframe width="560" height="315" src="https://www.youtube.com/embed/32hAim6Y6K4" frameborder="0" allowfullscreen></iframe>
+          </div>
+          <div class="modal-footer">
+	    <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">OK</button>
+	    <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">Cancel</button>
+          </div>
+	</script>
+
+	<button class="btn btn-large" ng-click="add()">Add Scene</button>
+	<button class="btn btn-large" ng-click="preferences()">Preferences</button>
 	<a class="btn btn-large" target="player" ng-href="player.html?comic={{encoded}}">Play</a>
 	<span ng-show="scenes.length">Length: {{ encoded.length }}</span>
 	<div ng-hide="scenes.length" class="explanation">
@@ -114,15 +129,16 @@
 	  <b>Yume.js</b> allows you to make comics from your mobile phone.
 	  </p>
 	  <p>
-	    This two minute video shows you how it works.
+	    This <a ng-click="showVideo()">two minute video shows</a> how it all works.
 	  </p>
 
 	  <p>
 	    To start, just click the <b>"Add Scene"</b> button to add your first
 	    scene. You can add as many scenes as you want. Then, add a 
 	    <b>character</b>
-	    and optionally change the rotation, position. You can also animate
-	    the <b>camera</b> on the scene. 
+	    and optionally change the rotation or position. You can also animate
+	    the <b>camera</b> on the scene. Then, click play to play the entire comic, or 
+	    preview just the scene. Once you have a comic you like, just share the play link.
 	  </p>
 
 	  <p>
@@ -257,7 +273,8 @@
 	    <div class="close" ng-click="closeModal()">X<div>
 	  </div>
 	</div>
-      </div>
+
+	  </div>
       
       
       <h3>Yume code</h3>
@@ -280,6 +297,8 @@
       
       
       <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.2.0/ui-bootstrap.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.2.0/ui-bootstrap-tpls.min.js"></script>
       <script src="builder.js"></script>
       
       <script>
