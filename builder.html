@@ -103,7 +103,29 @@
       <div ng-controller="BuilderCtrl" ng-init="init()">
 	<button class="btn btn-large" ng-click="add()">Add scene</button>
 	<a class="btn btn-large" target="player" ng-href="player.html?comic={{encoded}}">Play</a>
-	Length: {{ encoded.length }}
+	<span ng-show="scenes.length">Length: {{ encoded.length }}</span>
+	<div ng-hide="scenes.length">
+	  <p>
+	  Welcome to <b>Yume.js</b>. Yume (夢) means dream in Japanese. 
+	  <b>Yume.js</b> allows you to make comics from your mobile phone.
+	  </p>
+	  <p>
+	    This two minute video shows you how it works.
+	  </p>
+
+	  <p>
+	    To start, just click the <b>"Add Scene"</b> button to add your first
+	    scene. You can add as many scenes as you want. Then, add a 
+	    <b>character</b>
+	    and optionally change the rotation, position. You can also animate
+	    the <b>camera</b> on the scene. 
+	  </p>
+
+	  <p>
+	    Any questions? Please email me: <a href="mailto:xrdawson@gmail.com?subject=Question about Yume.js">email me</a>. Or, go to the <a href="https://github.com/xrd/yume.js">project page on GitHub</a> and file an <a href="https://github.com/xrd/yume.js/issues">issue or bug.</a>.
+	  </p>
+
+	</div>
 	<div ng-show="encoded.length > 2000">Warning: URLs longer than 2000 characters are problematic</div>
       </br>
       <div class="scene" ng-repeat="scene in scenes">
