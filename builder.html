@@ -7,6 +7,14 @@
 
     <style>
 
+      .code {
+      display: none;
+      }
+
+      .welcome {
+      padding-top: 0.5em;
+      }
+
       .close {
       position: absolute;;
       right: 50px;
@@ -104,48 +112,70 @@
   <body>
 
     <div class="container" ng-app="builder">
-      <div ng-controller="BuilderCtrl" ng-init="init()">
+      <div class="row">
+	<div class="col-md-12">
+	<div ng-controller="BuilderCtrl" ng-init="init()">
 
-	<script type="text/ng-template" id="youtube.html">
-          <div class="modal-header">
-	    <h3 class="modal-title" id="modal-title">How to use the Yume.js Builder</h3>
-          </div>
-          <div class="modal-body" id="modal-body">
-	    <iframe width="240" height="320" src="https://www.youtube.com/embed/EHqexqBVeSA" frameborder="0" allowfullscreen></iframe>
-          </div>
-          <div class="modal-footer">
-	    <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">OK</button>
-          </div>
-	</script>
+	  <!-- Modal templates -->
+	  <script type="text/ng-template" id="youtube.html">
+            <div class="modal-header">
+	      <h3 class="modal-title" id="modal-title">How to use the Yume.js Builder</h3>
+            </div>
+            <div class="modal-body" id="modal-body">
+	      <iframe width="240" height="320" src="https://www.youtube.com/embed/EHqexqBVeSA" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div class="modal-footer">
+	      <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">OK</button>
+            </div>
+	  </script>
 
-	<button class="btn btn-large" ng-click="add()">Add Scene</button>
-	<button class="btn btn-large" ng-click="preferences()">Preferences</button>
-	<a class="btn btn-large" target="player" ng-href="player.html?comic={{encoded}}">Play</a>
-	<span ng-show="scenes.length">Length: {{ encoded.length }}</span>
-	<div ng-hide="scenes.length">
-	  <p class="explanation">
-	    Welcome to <b>Yume.js</b>. Yume (夢) means dream in Japanese. 
-	    <b>Yume.js</b> allows you to make 3D (WebGL) comics from your mobile phone.
-	  </p>
-	  
-	  <p>
-	    This <a ng-click="showVideo()">two minute video shows</a> how it all works.
-	  </p>
-	  
-	  <p>
-	    To start, just click the <b>"Add Scene"</b> button to add your first
-	    scene. You can add as many scenes as you want. Then, add a 
-	    <b>character</b>
-	    and optionally change the rotation or position. You can also animate
-	    the <b>camera</b> on the scene. Then, click play to play the entire comic, or 
-	    preview just the scene. Once you have a comic you like, just share the play link.
-	  </p>
+	  <script type="text/ng-template" id="characters.html">
+            <div class="modal-header">
+	      <h3 class="modal-title" id="modal-title">Characters</h3>
+            </div>
+            <div class="modal-body" id="modal-body">
+	      Selected: {{ $ctrl.selected }}
+	      <br/>
+	      <div ng-repeat="character in $ctrl.characters">
+		<span ng-click="$ctrl.select(character)">{{ character }}</span>
+	      </div>
+            </div>
+            <div class="modal-footer">
+	      <button class="btn btn-primary" type="button" ng-click="$ctrl.ok($ctrl.selected)">OK</button>
+            </div>
+	  </script>
+	  <!-- End modal templates -->
 
-	  <p>
-	    Any questions? Please <a href="mailto:xrdawson@gmail.com?subject=Question about Yume.js">email me</a>. Or, go to the <a href="https://github.com/xrd/yume.js">project page on GitHub</a> and file an <a href="https://github.com/xrd/yume.js/issues">issue or bug.</a>.
-	  </p>
-	</div>
-	<div ng-show="encoded.length > 2000">Warning: URLs longer than 2000 characters are problematic</div>
+
+	  <button class="btn btn-large" ng-click="add()">Add Scene</button>
+	  <!-- button class="btn btn-large" ng-click="preferences()">Preferences</button -->
+
+	  <a class="btn btn-large" target="player" ng-href="player.html?comic={{encoded}}">Play</a>
+	  <span ng-show="scenes.length">Length: {{ encoded.length }}</span>
+	  <div ng-hide="scenes.length" class="welcome">
+	    <p class="explanation">
+	      Welcome to <b>Yume.js</b>. Yume (夢) means dream in Japanese. 
+	      <b>Yume.js</b> allows you to make 3D (WebGL) comics from your mobile phone.
+	    </p>
+	    
+	    <p>
+	      This <a ng-click="showVideo()">two minute video shows</a> how it all works.
+	    </p>
+	    
+	    <p>
+	      To start, just click the <b>"Add Scene"</b> button to add your first
+	      scene. You can add as many scenes as you want. Then, add a 
+	      <b>character</b>
+	      and optionally change the rotation or position. You can also animate
+	      the <b>camera</b> on the scene. Then, click play to play the entire comic, or 
+	      preview just the scene. Once you have a comic you like, just share the play link.
+	    </p>
+
+	    <p>
+	      Any questions? Please <a href="mailto:xrdawson@gmail.com?subject=Question about Yume.js">email me</a>. Or, go to the <a href="https://github.com/xrd/yume.js">project page on GitHub</a> and file an <a href="https://github.com/xrd/yume.js/issues">issue or bug.</a>.
+	    </p>
+	  </div>
+	  <div ng-show="encoded.length > 2000">Warning: URLs longer than 2000 characters are problematic</div>
       </br>
       <div class="scene" ng-repeat="scene in scenes">
 	<h3>Scene: {{ ( scene.caption && ( '"' + scene.caption + '"' ) ) || ($index+1) }}
@@ -260,40 +290,29 @@
 	    <button class="btn btn-large" ng-click="remove($index)">Delete Scene</button>
 	    <a class="btn btn-large" target="player" ng-href="player.html?comic={{previewSceneLink(scene)}}">Preview Scene</a>
 	  </div>
-	</div>
-	  
-	<div class="modalWrapper" ng-style="modal">
-	  <div class="backdrop" ng-style="modal"></div>
-	  <div class="modal" ng-style="modal">
-	    <h2>Choose character...</h2>
-	    <input class="form-control" ng-model="search" placeholder="Filter by name">
-	    <div class="character" ng-click="selectCharacter(character)" ng-repeat="character in characters | filter:search">
-	      {{ character }}
-	    </div>
-	    <div class="close" ng-click="closeModal()">X<div>
 	  </div>
 	</div>
+      </div>
 
-	  </div>
-      
-      
-      <h3>Yume code</h3>
-      <pre>
-	&lt;script&gt;
-	var data = {{ scenes | json }};
-	yume = new Yume();
-	yume.load( data );
-	yume.setup( "comic" );
-	&lt;/script&gt;
-	
-	&lt;div id="container"&gt;
-	&lt;div id="caption"&gt; &lt;/div&gt;
-	&lt;div id="comic"&gt; &lt;/div&gt;
-	&lt;div class="progression" id="back"&gt; Back &lt;/div&gt;
-	&lt;div class="progression" id="next"&gt; Next &lt;/div&gt;
-	&lt;/div&gt;
-	
-      </pre>
+      <div class="code">
+	<h3>Yume code</h3>
+	<pre>
+	  &lt;script&gt;
+	  var data = {{ scenes | json }};
+	  yume = new Yume();
+	  yume.load( data );
+	  yume.setup( "comic" );
+	  &lt;/script&gt;
+	  
+	  &lt;div id="container"&gt;
+	  &lt;div id="caption"&gt; &lt;/div&gt;
+	  &lt;div id="comic"&gt; &lt;/div&gt;
+	  &lt;div class="progression" id="back"&gt; Back &lt;/div&gt;
+	  &lt;div class="progression" id="next"&gt; Next &lt;/div&gt;
+	  &lt;/div&gt;
+	  
+	</pre>
+      </div>
       
       
       <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
