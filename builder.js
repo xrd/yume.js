@@ -44,6 +44,34 @@ mod.controller( 'BuilderCtrl', [ '$scope', '$location', '$http', '$uibModal', '$
 	});
     };
 
+    $scope.addCharacter = function( scene ) {
+	console.log( "Showing characters..." );
+	var modalInstance = $uibModal.open({
+	    animation: $ctrl.animationsEnabled,
+	    ariaLabelledBy: 'modal-title',
+	    ariaDescribedBy: 'modal-body',
+	    templateUrl: 'characters.html',
+	    controller: 'CharacterModalInstanceCtrl',
+	    controllerAs: '$ctrl',
+	    size: 'lg',
+	    resolve: {
+		characters: function () {
+		    return $scope.characters;
+		}
+      }
+	});
+	
+	modalInstance.result.then( function( character ) {
+	    if( character ) {
+		scene.models.push( { name: character } );
+	    }
+	}, function () {
+	    $log.info('Modal dismissed at: ' + new Date());
+	});
+    };
+
+
+
     $scope.init = function() {
 	var search = $location.search();
 	var decoded = atob( search.comic );
@@ -74,13 +102,6 @@ mod.controller( 'BuilderCtrl', [ '$scope', '$location', '$http', '$uibModal', '$
 
     displayedInlineStyle = { display: "inline" }
     
-    $scope.addCharacter = function( scene ) {
-	$scope.search = undefined;
-	$scope.modal = displayedInlineStyle;
-	$scope.backdrop = displayedInlineStyle;
-	$scope.selectedScene = scene;
-    }
-
     $scope.setCurrentCharacter = function( scene, character, index ) {
 	scene.currentCharacter = character;
 	scene.currentCharacterIndex = index;
@@ -124,3 +145,24 @@ mod.controller( 'ModalInstanceCtrl', function ($uibModalInstance ) {
     $uibModalInstance.dismiss('cancel');
   };
 });
+
+mod.controller( 'CharacterModalInstanceCtrl', function ( $uibModalInstance, characters ) {
+
+    var $ctrl = this;
+    
+    $ctrl.characters = characters;
+    $ctrl.selected = undefined;
+
+    $ctrl.select = function( character ) {
+	$ctrl.selected = character;
+    }
+
+    $ctrl.ok = function () {
+	$uibModalInstance.close( $ctrl.selected );
+    };
+    
+    $ctrl.cancel = function () {
+	$uibModalInstance.dismiss('cancel');
+    };
+});
+
