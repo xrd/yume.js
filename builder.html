@@ -211,12 +211,15 @@
 	  <div class="images">
 	    <div class="row">
 	      <div class="col-xs-12">
-		<h4>Images...</h4>o
+		<h4>Images...</h4>
+		<button id="quickstart-sign-in">Login</button>
+		<div id="quickstart-sign-in-status"></div>
 		<script src="https://www.gstatic.com/firebasejs/3.5.3/firebase.js"></script>
 		<script src="init.js"></script>
+		<script src="login.js"></script>
 		<script src="firebase.js"></script>
 
-		<div id="images"></div>
+		<div id="images">Empty</div>
 		Images are here...
 	      </div>
 	    </div>
@@ -308,9 +311,12 @@
 	</div>
       </div>
 
+	<div id="quickstart-account-details"></div>
+
+
       <div class="code">
 	<h3>Yume code</h3>
-	<pre>
+	o<pre>
 	  &lt;script&gt;
 	  var data = {{ scenes | json }};
 	  yume = new Yume();
@@ -327,6 +333,7 @@
 	  
 	</pre>
       </div>
+
       
       
       <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
