@@ -147,11 +147,22 @@ function Yume() {
 		if( data.images && data.images.length > 0 ) {
 		    for( var i = 0; i < data.images.length; i++ ) {
 			var url = data.images[i].reference;
-			data.images[i].image = p.createImage( url );
+			data.images[i].image =
+			    p.loadImage( url,
+					 function() { console.log( "Successful load") },
+					 loadImageErrorOverride );
 		    }
 		}
 	    }
 	}
+
+	function loadImageErrorOverride(errEvt) {
+	    const pic = errEvt.target;
+	    if (!pic.crossOrigin)  return console.error('Failed to reload ' + pic.src + '!');
+	    console.error('Attempting to reload it as a tainted image now...');
+	    pic.crossOrigin = null, pic.src = pic.src;
+	}
+
 	
 	// Stolen! From: https://github.com/danro/jquery-easing/blob/master/jquery.easing.js
 	// t: current time, b: begInnIng value, c: change In value, d: duration
@@ -246,7 +257,7 @@ function Yume() {
 
 		if( data.models && data.models.length > 0 ) {
 		    for( var i = 0; i < data.models.length; i++ ) {
-			drawIt( p, data.models[i], "model" );
+			drawIt( p, sceneDuration, data.models[i], "model" );
 		    }
 		}
 		if( data.images && data.images.length > 0 ) {
@@ -298,14 +309,17 @@ function Yume() {
 		y += parseInt( rotation.y ) || 0;
 		z += parseInt( rotation.z ) || 0;
 	    }
-		p.rotateX( p.radians( x ) || 0 ); 
+	    p.rotateX( p.radians( x ) || 0 ); 
 	    p.rotateY( p.radians( y ) || 0 );
 	    p.rotateZ( p.radians( z ) || 0 );
 	    
 	    if( type == "image" ) {
-		p.image( obj.model );
+		console.log( "Drawing image" );
+		p.texture( obj.image );
+		p.box( 200, 200, 200 );
 	    }
 	    else if( type == "model" ) {
+		console.log( "Drawig model" );
 		p.model( obj.model );
 	    }
 	    p.pop();
