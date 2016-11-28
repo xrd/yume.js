@@ -137,10 +137,18 @@ function Yume() {
 	}
 	
 	p.preload = function() {
-	    if( data && data.models && data.models.length > 0 ) {
-		for( var i = 0; i < data.models.length; i++ ) {
-		    var name = data.models[i].name;
-		    data.models[i].model = p.loadModel( name + ".obj", true );
+	    if( data ) {
+		if( data.models && data.models.length > 0 ) {
+		    for( var i = 0; i < data.models.length; i++ ) {
+			var name = data.models[i].name;
+			data.models[i].model = p.loadModel( name + ".obj", true );
+		    }
+		}
+		if( data.images && data.images.length > 0 ) {
+		    for( var i = 0; i < data.images.length; i++ ) {
+			var url = data.images[i].reference;
+			data.images[i].image = p.createImage( url );
+		    }
 		}
 	    }
 	}
@@ -187,16 +195,16 @@ function Yume() {
 	    }
 	}
 
-
+	
 	function setStartingTime() {
 	    startingTime = new Date().getTime();
 	    console.log( "Starting time is: " + startingTime );
 	}
-
+	
 	function sceneIsOver( sceneDurationInMs ) {
 	    return ( elapsedTimeInMs() > sceneDurationInMs );
 	}
-
+	
 	p.draw = function() {
 	    if( !startingTime ) {
 		setStartingTime();
@@ -235,55 +243,72 @@ function Yume() {
 		else {
 		    p.background( 220 );
 		}
-		
-		for( var i = 0; i < data.models.length; i++ ) {
-		    var pos = data.models[i].position || {};
-		    var x = parseInt( pos.x ) || 0;
-		    var y = parseInt( pos.y ) || 0;
-		    var z = parseInt( pos.z ) || 0;
 
-		    var movement = data.models[i].movement;
-		    if( !sceneIsOver( sceneDuration ) ) {
-			if( movement ) {
-			    x += ease( movement.x, sceneDuration );
-			    y += ease( movement.y, sceneDuration );
-			    z += ease( movement.z, sceneDuration );
-			}
+		if( data.models && data.models.length > 0 ) {
+		    for( var i = 0; i < data.models.length; i++ ) {
+			drawIt( p, data.models[i], "model" );
 		    }
-		    else {
-			output( "Scene is over: " + sceneDuration );
-			if( movement ) {
-			    x += parseInt( movement.x );
-			    y += parseInt( movement.y );
-			    z += parseInt( movement.z );
-			}
+		}
+		if( data.images && data.images.length > 0 ) {
+		    for( var i = 0; i < data.images.length; i++ ) {
+			drawIt( p, sceneDuration, data.images[i], "image" );
 		    }
-
-		    output( "Movement: " + x + "," + y + "," + z );
-
-		    p.push()
-		    p.translate( x, y, z );
-		    var initRot = data.models[i].initialRotation || {};
-		    var rotation = data.models[i].rotation || {};
-		    var x = parseInt( initRot.x ) || 0, y = parseInt( initRot.y ) || 0, z = parseInt( initRot.z ) || 0;
-		    if( !sceneIsOver( sceneDuration ) ) {
-			x += ease( rotation.x, sceneDuration );
-			y += ease( rotation.y, sceneDuration );
-			z += ease( rotation.z, sceneDuration );
-		    }
-		    else {
-			x += parseInt( rotation.x ) || 0;
-			y += parseInt( rotation.y ) || 0;
-			z += parseInt( rotation.z ) || 0;
-		    }
-		    p.rotateX( p.radians( x ) || 0 ); 
-		    p.rotateY( p.radians( y ) || 0 );
-		    p.rotateZ( p.radians( z ) || 0 );
-		    p.model( data.models[i].model );
-
-		    p.pop();
 		}
 	    }
+	}
+
+	function drawIt( p, sceneDuration, obj, type ) {
+	    
+	    var pos = obj.position || {};
+	    var x = parseInt( pos.x ) || 0;
+	    var y = parseInt( pos.y ) || 0;
+	    var z = parseInt( pos.z ) || 0;
+	    
+	    var movement = obj.movement;
+	    if( !sceneIsOver( sceneDuration ) ) {
+		if( movement ) {
+		    x += ease( movement.x, sceneDuration );
+		    y += ease( movement.y, sceneDuration );
+		    z += ease( movement.z, sceneDuration );
+		}
+	    }
+	    else {
+		output( "Scene is over: " + sceneDuration );
+		if( movement ) {
+			x += parseInt( movement.x );
+		    y += parseInt( movement.y );
+		    z += parseInt( movement.z );
+		}
+	    }
+	    
+	    output( "Movement: " + x + "," + y + "," + z );
+	    
+	    p.push()
+	    p.translate( x, y, z );
+	    var initRot = obj.initialRotation || {};
+		var rotation = obj.rotation || {};
+	    var x = parseInt( initRot.x ) || 0, y = parseInt( initRot.y ) || 0, z = parseInt( initRot.z ) || 0;
+	    if( !sceneIsOver( sceneDuration ) ) {
+		x += ease( rotation.x, sceneDuration );
+		y += ease( rotation.y, sceneDuration );
+		z += ease( rotation.z, sceneDuration );
+	    }
+	    else {
+		x += parseInt( rotation.x ) || 0;
+		y += parseInt( rotation.y ) || 0;
+		z += parseInt( rotation.z ) || 0;
+	    }
+		p.rotateX( p.radians( x ) || 0 ); 
+	    p.rotateY( p.radians( y ) || 0 );
+	    p.rotateZ( p.radians( z ) || 0 );
+	    
+	    if( type == "image" ) {
+		p.image( obj.model );
+	    }
+	    else if( type == "model" ) {
+		p.model( obj.model );
+	    }
+	    p.pop();
 	}
     }
     

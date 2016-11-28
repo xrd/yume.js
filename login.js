@@ -1,103 +1,98 @@
-var ghUser;
+mod.controller( 'ImageCtrl', [ '$scope', function( $scope ) {
 
-/**
- * Function called when clicking the Login/Logout button.
- */
-// [START buttoncallback]
-function toggleSignIn() {
-    if (!firebase.auth().currentUser) {
-	// [START createprovider]
-	var provider = new firebase.auth.GithubAuthProvider();
-	// [END createprovider]
-	// [START addscopes]
-	// provider.addScope('repo');
-	// [END addscopes]
-	// [START signin]
-	firebase.auth().signInWithPopup(provider).then(function(result) {
-	    // This gives you a GitHub Access Token. You can use it to access the GitHub API.
-	    var token = result.credential.accessToken;
-	    // The signed-in user info.
-	    var user = result.user;
-	    
-	    var urls = loadImages( user );
-	    document.getElementById( "images" ).innerHTML = urls;
-	    // [START_EXCLUDE]
-	    document.getElementById('quickstart-oauthtoken').textContent = token;
-	    // [END_EXCLUDE]
-	}).catch(function(error) {
-	    // Handle Errors here.
-	    var errorCode = error.code;
-	    var errorMessage = error.message;
-	    // The email of the user's account used.
-	    var email = error.email;
-	    // The firebase.auth.AuthCredential type that was used.
-	    var credential = error.credential;
-	    // [START_EXCLUDE]
-	    if (errorCode === 'auth/account-exists-with-different-credential') {
-		alert('You have already signed up with a different auth provider for that email.');
-		// If you are using multiple auth providers on your app you should handle linking
-		// the user's accounts here.
-	    } else {
-		console.error(error);
-	    }
-	    // [END_EXCLUDE]
-	});
-	// [END signin]
-    } else {
-	// [START signout]
-	firebase.auth().signOut();
-	// [END signout]
+    $scope.ghUser = undefined;
+    
+    $scope.afterSignIn = function(result) {
+	console.log( "Inside the sign in action" );
+	// This gives you a GitHub Access Token. You can use it to access the GitHub API.
+	$scope.token = result.credential.accessToken;
+	$scope.user = result.user;
+	$scope.loadImages();
+	// 3console.log( "URLs", $scope.urls );
     }
-    // [START_EXCLUDE]
-    document.getElementById('quickstart-sign-in').disabled = true;
-    // [END_EXCLUDE]
-}
-// [END buttoncallback]
+
+    $scope.addImage = function(scene, url) {
+	if( !scene.images ) {
+	    scene.images = [];
+	}
+	scene.images.push( { reference: url } );
+    }
+    
+    $scope.signInError = function(error) {
+	var errorCode = error.code;
+	var errorMessage = error.message;
+	var email = error.email;
+	var credential = error.credential;
+	if (errorCode === 'auth/account-exists-with-different-credential') {
+	    alert('You have already signed up with a different auth provider for that email.');
+	} else {
+	    console.error(error);
+	}
+    }
+    
+    $scope.loadImages = function() {
+	$scope.urls = [];
+	// Create a reference with an initial file path and name
+	var storage = firebase.storage();
+	// Create a reference from a Google Cloud Storage URI
+	for( x in [ 1,2,3 ] ) {
+	    var gsReference = storage.refFromURL('gs://yumejs-42402.appspot.com/images/' + $scope.ghUser.uid + "/" + x + ".jpg" );
+	    gsReference.getDownloadURL().then( function( url ) {
+		console.log( "URL: " + url );
+		$scope.urls.push( url ); // + "\")'>" + url + "</a>";
+		$scope.$apply();
+	    } ).catch( function( err ) {
+		console.log( "Err: " + err );
+	    } );
+	    console.log( "Checking..." );
+	}
+    }
+	
+    // Create a reference from an HTTPS URL
+    // Note that in the URL, characters are URL escaped!
+    // var httpsReference = storage.refFromURL('https://firebasestorage.googleapis.com/b/bucket/o/images%20stars.jpg');
+    // console.log( gsReference );
 
 
-/**
- * initApp handles setting up UI event listeners and registering Firebase auth listeners:
- *  - firebase.auth().onAuthStateChanged: This listener is called when the user is signed in or
- *    out, and that is where we update the UI.
- */
-function initApp() {
-    // Listening for auth state changes.
-    // [START authstatelistener]
-    firebase.auth().onAuthStateChanged(function(user) {
+    $scope.loginToFirebase = function() {
+	if (!firebase.auth().currentUser) {
+	    var provider = new firebase.auth.GithubAuthProvider();
+	    firebase.auth().signInWithPopup(provider).then( $scope.afterSignIn ).catch( $scope.signInError );
+	} else {
+	    firebase.auth().signOut();
+	}
+	
+    }
+    
+    $scope.onUserLogin = function(user) {
 	if (user) {
-	    // User is signed in.
 	    var displayName = user.displayName;
 	    var email = user.email;
 	    var emailVerified = user.emailVerified;
 	    var photoURL = user.photoURL;
 	    var isAnonymous = user.isAnonymous;
 	    var uid = user.uid;
-	    ghUser = {};
-	    ghUser.uid = uid;
+	    $scope.ghUser = user;
 	    var providerData = user.providerData;
-	    // [START_EXCLUDE]
-	    document.getElementById('quickstart-sign-in-status').textContent = 'Signed in';
-	    document.getElementById('quickstart-sign-in').textContent = 'Sign out';
-      document.getElementById('quickstart-account-details').textContent = JSON.stringify(user, null, '  ');
-	    // [END_EXCLUDE]
+	    
+	    //applyToElIfExists('quickstart-sign-in-status', 'textContent', 'Signed in');
+	    //applyToElIfExists('quickstart-sign-in', 'textContent', 'Sign out');
+	    //applyToElIfExists('quickstart-account-details', 'textContent', JSON.stringify(user, null, '  ') );
+	    
 	} else {
-	    // User is signed out.
-	    // [START_EXCLUDE]
-	    document.getElementById('quickstart-sign-in-status').textContent = 'Signed out';
-	    document.getElementById('quickstart-sign-in').textContent = 'Sign in with GitHub';
-	    document.getElementById('quickstart-account-details').textContent = 'null';
-	    // document.getElementById('quickstart-oauthtoken').textContent = 'null';
-	    // [END_EXCLUDE]
+	    
+	    //applyToElIfExists('quickstart-sign-in-status', 'textContent', 'Signed out' );
+	    //applyToElIfExists('quickstart-sign-in', 'textContent', 'Sign in with GitHub' );
+	    //applyToElIfExists('quickstart-account-details', 'textContent', 'null' );
+	    
 	}
-	// [START_EXCLUDE]
-	document.getElementById('quickstart-sign-in').disabled = false;
-	// [END_EXCLUDE]
-    });
-    // [END authstatelistener]
+	//	applyToElIfExists('quickstart-sign-in', 'disabled', false );
+    }
     
-    document.getElementById('quickstart-sign-in').addEventListener('click', toggleSignIn, false);
-}
+    
+    $scope.initFirebase = function() {
+	firebase.auth().onAuthStateChanged( $scope.onUserLogin );
 
-window.onload = function() {
-    initApp();
-};
+    }
+    
+} ] );
