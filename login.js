@@ -12,10 +12,10 @@ mod.controller( 'ImageCtrl', [ '$scope', function( $scope ) {
     }
 
     $scope.addImage = function(scene, url) {
-	if( !scene.images ) {
-	    scene.images = [];
+	if( !scene.models ) {
+	    scene.models = [];
 	}
-	scene.images.push( { reference: url } );
+	scene.models.push( { reference: url, type: "image" } );
     }
     
     $scope.signInError = function(error) {

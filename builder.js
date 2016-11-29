@@ -82,7 +82,7 @@ mod.controller( 'BuilderCtrl', [ '$scope', '$location', '$http', '$uibModal', '$
 	} );
     }
 
-    $scope.previewSceneLink = function( scene ) {
+    $scope.previewSceneLink = function( scene ) {	
 	encoded = btoa( JSON.stringify( [ scene ] ) );
 	return encoded;
     }

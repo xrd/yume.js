@@ -217,7 +217,6 @@
 		<div id="images">
 		  <div ng-click="addImage(scene,url)" ng-repeat="url in urls">{{ url | limitTo:30 }}</div>
 		</div>
-		Images are here...
 	      </div>
 	    </div>
 	  </div>
@@ -237,7 +236,10 @@
 		<span class="character-gallery">
 		  <div class="btn-group" role="group" aria-label="...">
 		    <div class="character" ng-click="addCharacter(scene)"> + </div>
-		    <div ng-class="{ 'selected' : character == scene.currentCharacter }" ng-click="setCurrentCharacter( scene, character, $index )" ng-repeat="character in scene.models track by $index" class="character"> {{ character.name }} </div>
+		    <div ng-class="{ 'selected' : character == scene.currentCharacter }" ng-click="setCurrentCharacter( scene, character, $index )" ng-repeat="character in scene.models track by $index" class="character">
+		      {{ character.name }}
+		      <img ng-src="{{ character.reference }}" style="height:45;width:45" ng-show="character.reference"/>
+		    </div>
 		  </div>
 		</span>
 	      </div>
@@ -248,7 +250,9 @@
 		<button ng-class='{ "btn-primary" : scene.view == "rotate" }' ng-click="scene.view = 'rotate'" type="button" class="btn btn-default">Rotate</button>
 		<button ng-class='{ "btn-primary" : scene.view == "position" }' ng-click="scene.view = 'position'" type="button" class="btn btn-default">Position</button>
 		<button  ng-class='{ "btn-primary" : scene.view == "initialRotation" }' ng-click="scene.view = 'initialRotation'" type="button" class="btn btn-default">Initial Rotation</button>
-	      </div>
+
+	      	<button ng-show="scene.currentCharacter.type=='image'" ng-class='{ "btn-primary" : scene.view == "size" }' ng-click="scene.view = 'size'" type="button" class="btn btn-default">Size</button>
+</div>
 	      
 	      <div ng-show="'rotate' == scene.view" class="coordinates">
 		<h4>Model Rotation</h4>
@@ -280,6 +284,7 @@
 		  </div>
 		</div>
 	      </div>
+	      
 	      <div ng-show="'position' == scene.view" class="coordinates">
 		<h4>Position in Scene</h4>
 		<small>Optional. Position of the model in the scene</small>
@@ -295,6 +300,24 @@
 		  </div>
 		</div>
 	      </div>
+
+	      <div ng-show="'size' == scene.view" class="coordinates">
+		<h4>Size</h4>
+		<small>Optional. Scale (preferred) or absolute size of image (defaults to image dimensions)</small>
+		<div class="row">
+		  <div class="col-xs-4">
+		    <input class="form-control" ng-model="scene.currentCharacter.imageSize.scale" placeholder="Scale (float value)">
+		  </div>
+
+		  <div class="col-xs-4">
+		    <input class="form-control" ng-model="scene.currentCharacter.imageSize.width" placeholder="Width">
+		  </div>
+		  <div class="col-xs-4">
+		    <input class="form-control" ng-model="scene.currentCharacter.imageSize.height" placeholder="Height">
+		  </div>
+		</div>
+		{{ scene.currentCharacter | json }}
+	      </div>
 	      
 	      <button class="btn" ng-click="removeCharacter( scene )">Remove Character</button>
 	      
@@ -307,8 +330,6 @@
 	  </div>
 	</div>
       </div>
-
-	<div id="quickstart-account-details"></div>
 
 
       <div class="code">
@@ -341,7 +362,6 @@
       <script src="https://www.gstatic.com/firebasejs/3.5.3/firebase.js"></script>
       <script src="init.js"></script>
       <script src="login.js"></script>
-      <script src="firebase.js"></script>
       
       <script>
 	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

@@ -1,0 +1,16 @@
+[
+  {
+    "origin": [
+      "http://localhost:9090"
+    ],
+    "responseHeader": [
+      "Content-Type"
+    ],
+    "method": [
+      "GET",
+      "HEAD",
+      "DELETE"
+    ],
+    "maxAgeSeconds": 3600
+  }
+]
