@@ -266,8 +266,6 @@ function Yume() {
 
 	function drawIt( p, sceneDuration, obj ) {
 	    var type = obj.type || "model"; // We don't specify it (unless an image)
-	    
-	    
 	    var pos = obj.position || {};
 	    var x = parseInt( pos.x ) || 0;
 	    var y = parseInt( pos.y ) || 0;
@@ -299,9 +297,9 @@ function Yume() {
 	    //     p.pointLight( pl.x, pl.y, pl.z, pl.x1, pl.y2, pl.z2 );
 	    // }
 	    // else {
-	    if( type == "model" ) {
-		p.pointLight( 200, 200, 200, 89, 45, 0);
-	    }
+	    //if( type == "model" ) {
+		// p.pointLight( 200, 200, 200, 89, 45, 0);
+	    //}
 	    // }
 	    
 	    p.translate( x, y, z );
