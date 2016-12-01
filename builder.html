@@ -131,14 +131,61 @@
 
 	  <script type="text/ng-template" id="characters.html">
             <div class="modal-header">
-	      <h3 class="modal-title" id="modal-title">Characters</h3>
+	      <h3 class="modal-title" id="modal-title">Characters/Images/Shapes</h3>
             </div>
             <div class="modal-body" id="modal-body">
 	      Selected: {{ $ctrl.selected }}
 	      <br/>
-	      <div ng-repeat="character in $ctrl.characters">
-		<span ng-click="$ctrl.select(character)">{{ character }}</span>
+	      
+	      <div class="btn-group" role="group" aria-label="...">
+		<button ng-class='{ "btn-primary" : $ctrl.view == "characters" }' ng-click="$ctrl.view = 'characters'" type="button" class="btn btn-default">Rotate</button>
+		<button ng-class='{ "btn-primary" : $ctrl.view == "images" }' ng-click="$ctrl.view = 'images'" type="button" class="btn btn-default">Images</button>
+		<button  ng-class='{ "btn-primary" : $ctrl.view == "shapes" }' ng-click="$ctrl.view = 'shapes'" type="button" class="btn btn-default">Shapes</button>
+		
 	      </div>
+
+	      <div ng-show="$ctrl.view == 'characters'">
+		<div ng-repeat="character in $ctrl.characters">
+		  <span ng-click="$ctrl.select(character)">{{ character }}</span>
+		</div>
+	      </div>
+	      
+	      <div ng-show="$ctrl.view == 'images'">
+		<div class="images" ng-controller="ImageCtrl" ng-init="initFirebase()">
+		  <div class="row">
+		    <div class="col-xs-12">
+		      <div ng-hide="ghUser">
+			<button ng-click="loginToFirebase()">Authenticate via GitHub to add images.</button>
+		      </div>
+		      <div id="images" ng-show="ghUser">
+			<div ng-click="$ctrl.select(url,'image')" ng-repeat="url in urls">{{ url | limitTo:-30 }}</div>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+	      </div>
+
+	      <div ng-show="$ctrl.view == 'shapes'">
+		<div ng-show="$ctrl.selected">
+		  <div class="row">
+		    <div class="col-xs-4">
+		      <input class="form-control" ng-model="$ctrl.param1" placeholder="Parameter 1">
+		    </div>
+		    <div class="col-xs-4">
+		      <input class="form-control" ng-model="$ctrl.param2" placeholder="Parameter 2">
+		    </div>
+		    <div class="col-xs-4">
+		      <input class="form-control" ng-model="$ctrl.param3" placeholder="Parameter 3">
+		    </div>
+		  </div>
+		</div>
+		<div ng-repeat="shape in $ctrl.shapes">
+		  <span ng-click="$ctrl.select(shape, 'shape')">{{ shape }}</span>
+		</div>
+	      </div>
+	      
+	      
+	      
             </div>
             <div class="modal-footer">
 	      <button class="btn btn-primary" type="button" ng-click="$ctrl.ok($ctrl.selected)">OK</button>
@@ -208,26 +255,13 @@
 	    </div>
 	  </div>
 
-	  <div class="images" ng-controller="ImageCtrl" ng-init="initFirebase()">
-	    <div class="row">
-	      <div class="col-xs-12">
-		<h4>Images...</h4>
-		<button ng-click="loginToFirebase()">Login</button>
-		<div id="quickstart-sign-in-status"></div>
-		<div id="images">
-		  <div ng-click="addImage(scene,url)" ng-repeat="url in urls">{{ url | limitTo:30 }}</div>
-		</div>
-	      </div>
-	    </div>
-	  </div>
-	  
 	  <div class="models">
 	    <div class="row">
 	      <div class="col-xs-12">
 		<h4>3D Model(s): {{ scene.models.length }} in scene</h4>
 		<div ng-hide="scene.currentCharacter">
 		  <div ng-hide="scene.models.length">
-		    Please add a character and then optionally select it to edit attributes
+		    Please add a character/image/shape and then optionally select it to edit attributes
 		  </div>
 		  <div ng-show="scene.models.length">
 		    Select one of the characters below to edit attributes.
@@ -237,8 +271,8 @@
 		  <div class="btn-group" role="group" aria-label="...">
 		    <div class="character" ng-click="addCharacter(scene)"> + </div>
 		    <div ng-class="{ 'selected' : character == scene.currentCharacter }" ng-click="setCurrentCharacter( scene, character, $index )" ng-repeat="character in scene.models track by $index" class="character">
-		      {{ character.name }}
-		      <img ng-src="{{ character.reference }}" style="height:45;width:45" ng-show="character.reference"/>
+		      <span ng-hide="'image'==character.type">{{ character.name }}</span>
+		      <img ng-src="{{ character.name }}" style="height:45;width:45" ng-show="'image'==character.type"/>
 		    </div>
 		  </div>
 		</span>
@@ -252,7 +286,7 @@
 		<button  ng-class='{ "btn-primary" : scene.view == "initialRotation" }' ng-click="scene.view = 'initialRotation'" type="button" class="btn btn-default">Initial Rotation</button>
 
 	      	<button ng-show="scene.currentCharacter.type=='image'" ng-class='{ "btn-primary" : scene.view == "size" }' ng-click="scene.view = 'size'" type="button" class="btn btn-default">Size</button>
-</div>
+	      </div>
 	      
 	      <div ng-show="'rotate' == scene.view" class="coordinates">
 		<h4>Model Rotation</h4>

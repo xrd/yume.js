@@ -74,21 +74,10 @@ mod.controller( 'ImageCtrl', [ '$scope', function( $scope ) {
 	    var uid = user.uid;
 	    $scope.ghUser = user;
 	    var providerData = user.providerData;
-	    
-	    //applyToElIfExists('quickstart-sign-in-status', 'textContent', 'Signed in');
-	    //applyToElIfExists('quickstart-sign-in', 'textContent', 'Sign out');
-	    //applyToElIfExists('quickstart-account-details', 'textContent', JSON.stringify(user, null, '  ') );
-	    
-	} else {
-	    
-	    //applyToElIfExists('quickstart-sign-in-status', 'textContent', 'Signed out' );
-	    //applyToElIfExists('quickstart-sign-in', 'textContent', 'Sign in with GitHub' );
-	    //applyToElIfExists('quickstart-account-details', 'textContent', 'null' );
-	    
+	    $scope.loadImages();
 	}
-	//	applyToElIfExists('quickstart-sign-in', 'disabled', false );
+
     }
-    
     
     $scope.initFirebase = function() {
 	firebase.auth().onAuthStateChanged( $scope.onUserLogin );

@@ -292,15 +292,15 @@ function Yume() {
 	    
 	    p.push()
 
-	    // if( data.pointLight ) {
-	    //     var pl = data.pointLight;
-	    //     p.pointLight( pl.x, pl.y, pl.z, pl.x1, pl.y2, pl.z2 );
-	    // }
-	    // else {
-	    //if( type == "model" ) {
-		// p.pointLight( 200, 200, 200, 89, 45, 0);
-	    //}
-	    // }
+	    if( data.pointLight ) {
+	        var pl = data.pointLight;
+	        p.pointLight( pl.x, pl.y, pl.z, pl.x1, pl.y2, pl.z2 );
+	    }
+	    else {
+		if( type == "model" ) {
+		    p.pointLight( 200, 200, 200, 89, 45, 0);
+		}
+	    }
 	    
 	    p.translate( x, y, z );
 	    var initRot = obj.initialRotation || {};
@@ -337,7 +337,7 @@ function Yume() {
 		    }
 		}
 		// console.log( "Using size: ", width, height );
-		p.box( width, height, 1 );
+		p.plane( width, height );
 	    }
 	    else if( type == "model" ) {
 		// console.log( "Drawig model" );
