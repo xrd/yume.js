@@ -6,6 +6,16 @@ mod.controller( 'BuilderCtrl', [ '$scope', '$location', '$http', '$uibModal', '$
 
     $scope.scenes = []
 
+    $scope.shapes = [
+	"plane",
+	"box",
+	"sphere",
+	"cylinder",
+	"cone",
+	"ellipsoid",
+	"torus"
+	]
+    
     $scope.characters = [
 	"man",
 	"face",
@@ -55,15 +65,18 @@ mod.controller( 'BuilderCtrl', [ '$scope', '$location', '$http', '$uibModal', '$
 	    controllerAs: '$ctrl',
 	    size: 'lg',
 	    resolve: {
+		shapes: function() {
+		    return $scope.shapes;
+		},
 		characters: function () {
 		    return $scope.characters;
 		}
-      }
+	    }
 	});
 	
 	modalInstance.result.then( function( character ) {
 	    if( character ) {
-		scene.models.push( { name: character } );
+		scene.models.push( character );
 	    }
 	}, function () {
 	    $log.info('Modal dismissed at: ' + new Date());
@@ -82,7 +95,7 @@ mod.controller( 'BuilderCtrl', [ '$scope', '$location', '$http', '$uibModal', '$
 	} );
     }
 
-    $scope.previewSceneLink = function( scene ) {
+    $scope.previewSceneLink = function( scene ) {	
 	encoded = btoa( JSON.stringify( [ scene ] ) );
 	return encoded;
     }
@@ -146,15 +159,20 @@ mod.controller( 'ModalInstanceCtrl', function ($uibModalInstance ) {
   };
 });
 
-mod.controller( 'CharacterModalInstanceCtrl', function ( $uibModalInstance, characters ) {
+mod.controller( 'CharacterModalInstanceCtrl', function ( $uibModalInstance, characters, shapes ) {
 
     var $ctrl = this;
     
     $ctrl.characters = characters;
     $ctrl.selected = undefined;
-
-    $ctrl.select = function( character ) {
-	$ctrl.selected = character;
+    $ctrl.shapes = shapes;
+    $ctrl.view = "characters";
+    
+    $ctrl.select = function( character, type ) {
+	if( !type ) {
+	    type = "character";
+	}
+	$ctrl.selected = { name: character, type: type };
     }
 
     $ctrl.ok = function () {

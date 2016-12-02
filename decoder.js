@@ -13,6 +13,7 @@ function decoder() {
 		try {
 		    var json = atob( tuple[1] );
 		    var scenes = JSON.parse( json );
+		    console.log( "JSON", json );
 		    var yume = new Yume();
 		    yume.load( scenes );
 		    yume.setup();
