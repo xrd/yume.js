@@ -146,7 +146,7 @@ function Yume() {
 			}
 			if( "image" == data.models[i].type ) {
 			    console.log( "Model", data.models[i] );
-			    var url = data.models[i].reference;
+			    var url = data.models[i].name;
 			    data.models[i].image =
 				p.loadImage( url,
 					     function( img ) {
