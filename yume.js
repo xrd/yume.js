@@ -339,7 +339,7 @@ function Yume() {
 		// console.log( "Using size: ", width, height );
 		p.plane( width, height );
 	    }
-	    else if( type == "model" ) {
+	    else if( type == "model" || type == "character" ) {
 		// console.log( "Drawig model" );
 		p.model( obj.model );
 	    }
