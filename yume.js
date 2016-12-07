@@ -297,7 +297,7 @@ function Yume() {
 	        p.pointLight( pl.x, pl.y, pl.z, pl.x1, pl.y2, pl.z2 );
 	    }
 	    else {
-		if( type == "model" ) {
+		if( type == "model" || "character" == type ) {
 		    p.pointLight( 200, 200, 200, 89, 45, 0);
 		}
 	    }
