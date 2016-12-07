@@ -140,7 +140,7 @@ function Yume() {
 	    if( data ) {
 		if( data.models && data.models.length > 0 ) {
 		    for( var i = 0; i < data.models.length; i++ ) {
-			if( !data.models[i].type ) {
+			if( !data.models[i].type || "character" == data.models[i].type ) {
 			    var name = data.models[i].name;
 			    data.models[i].model = p.loadModel( name + ".obj", true );
 			}
