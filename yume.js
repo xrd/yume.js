@@ -343,6 +343,9 @@ function Yume() {
 		// console.log( "Drawig model" );
 		p.model( obj.model );
 	    }
+	    else if( type == "shape" ) {
+		p[obj.name]( obj.params[0], obj.params[1], obj.params[2] )
+	    }
 	    p.pop();
 	}
     }

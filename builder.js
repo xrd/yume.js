@@ -172,7 +172,11 @@ mod.controller( 'CharacterModalInstanceCtrl', function ( $uibModalInstance, char
 	if( !type ) {
 	    type = "character";
 	}
-	$ctrl.selected = { name: character, type: type };
+	params = { params: [ $ctrl.param1, $ctrl.param2, $ctrl.param3 ] };
+	$ctrl.selected = { name: character, type: type }
+	if( $ctrl.param1 && $ctrl.param2 ) {
+	    $ctrl.selected.params = params
+	}
     }
 
     $ctrl.ok = function () {
