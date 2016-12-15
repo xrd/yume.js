@@ -21,7 +21,7 @@
       top: 50px;
       border: 3px solid black;
       }
-      
+
       .sceneActions {
       padding-top: 0.5em;
       padding-bottom: 0.5em;
@@ -38,7 +38,7 @@
       .details {
       padding-bottom: 0.3em;
       }
-      
+
       .character-gallery {
       width: 100%;
       height: 60px;
@@ -52,7 +52,7 @@
       .character-gallery .selected {
       font-weight: bold;
       }
-      
+
       .character-gallery .character {
       display: inline-block;
       position: relative;
@@ -84,7 +84,7 @@
       height: 100%;
       display: none;
       }
-      
+
       .modal {
       margin: auto 0;
       padding: 3em;
@@ -105,7 +105,7 @@
       .explanation {
       font-size: 1.5em;
       }
-      
+
     </style>
   </head>
 
@@ -136,12 +136,12 @@
             <div class="modal-body" id="modal-body">
 	      Selected: {{ $ctrl.selected }}
 	      <br/>
-	      
+
 	      <div class="btn-group" role="group" aria-label="...">
 		<button ng-class='{ "btn-primary" : $ctrl.view == "characters" }' ng-click="$ctrl.view = 'characters'" type="button" class="btn btn-default">Rotate</button>
 		<button ng-class='{ "btn-primary" : $ctrl.view == "images" }' ng-click="$ctrl.view = 'images'" type="button" class="btn btn-default">Images</button>
 		<button  ng-class='{ "btn-primary" : $ctrl.view == "shapes" }' ng-click="$ctrl.view = 'shapes'" type="button" class="btn btn-default">Shapes</button>
-		
+
 	      </div>
 
 	      <div ng-show="$ctrl.view == 'characters'">
@@ -149,7 +149,7 @@
 		  <span ng-click="$ctrl.select(character)">{{ character }}</span>
 		</div>
 	      </div>
-	      
+
 	      <div ng-show="$ctrl.view == 'images'">
 		<div class="images" ng-controller="ImageCtrl" ng-init="initFirebase()">
 		  <div class="row">
@@ -183,9 +183,9 @@
 		  <span ng-click="$ctrl.select(shape, 'shape')">{{ shape }}</span>
 		</div>
 	      </div>
-	      
-	      
-	      
+
+
+
             </div>
             <div class="modal-footer">
 	      <button class="btn btn-primary" type="button" ng-click="$ctrl.ok($ctrl.selected)">OK</button>
@@ -201,20 +201,20 @@
 	  <span ng-show="scenes.length">Length: {{ encoded.length }}</span>
 	  <div ng-hide="scenes.length" class="welcome">
 	    <p class="explanation">
-	      Welcome to <b>Yume.js</b>. Yume (夢) means dream in Japanese. 
+	      Welcome to <b>Yume.js</b>. Yume (夢) means dream in Japanese.
 	      <b>Yume.js</b> allows you to make 3D (WebGL) comics from your mobile phone.
 	    </p>
-	    
+
 	    <p>
 	      This <a ng-click="showVideo()">two minute video shows</a> how it all works.
 	    </p>
-	    
+
 	    <p>
 	      To start, just click the <b>"Add Scene"</b> button to add your first
-	      scene. You can add as many scenes as you want. Then, add a 
+	      scene. You can add as many scenes as you want. Then, add a
 	      <b>character</b>
 	      and optionally change the rotation or position. You can also animate
-	      the <b>camera</b> on the scene. Then, click play to play the entire comic, or 
+	      the <b>camera</b> on the scene. Then, click play to play the entire comic, or
 	      preview just the scene. Once you have a comic you like, just share the play link.
 	    </p>
 
@@ -229,7 +229,7 @@
 	  <span ng-show="scene.expanded" ng-click="scene.expanded = !scene.expanded" class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
 	  <span ng-hide="scene.expanded" ng-click="scene.expanded = !scene.expanded" class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
 	</h3>
-	
+
 	<div ng-show="scene.expanded">
 	  <div class="input-group details">
 	    <div class="input-group-addon">Caption</div>
@@ -278,7 +278,7 @@
 		</span>
 	      </div>
 	    </div>
-	    
+
 	    <div ng-show="scene.currentCharacter">
 	      <div class="btn-group" role="group" aria-label="...">
 		<button ng-class='{ "btn-primary" : scene.view == "rotate" }' ng-click="scene.view = 'rotate'" type="button" class="btn btn-default">Rotate</button>
@@ -287,7 +287,7 @@
 
 	      	<button ng-show="scene.currentCharacter.type=='image'" ng-class='{ "btn-primary" : scene.view == "size" }' ng-click="scene.view = 'size'" type="button" class="btn btn-default">Size</button>
 	      </div>
-	      
+
 	      <div ng-show="'rotate' == scene.view" class="coordinates">
 		<h4>Model Rotation</h4>
 		<small>Optional. Rotation of the model during the scene (degrees)</small>
@@ -318,7 +318,7 @@
 		  </div>
 		</div>
 	      </div>
-	      
+
 	      <div ng-show="'position' == scene.view" class="coordinates">
 		<h4>Position in Scene</h4>
 		<small>Optional. Position of the model in the scene</small>
@@ -352,9 +352,9 @@
 		</div>
 		{{ scene.currentCharacter | json }}
 	      </div>
-	      
+
 	      <button class="btn" ng-click="removeCharacter( scene )">Remove Character</button>
-	      
+
 	    </div>
 	  </div>
 	  <div class="sceneActions">
@@ -375,38 +375,28 @@
 	  yume.load( data );
 	  yume.setup( "comic" );
 	  &lt;/script&gt;
-	  
+
 	  &lt;div id="container"&gt;
 	  &lt;div id="caption"&gt; &lt;/div&gt;
 	  &lt;div id="comic"&gt; &lt;/div&gt;
 	  &lt;div class="progression" id="back"&gt; Back &lt;/div&gt;
 	  &lt;div class="progression" id="next"&gt; Next &lt;/div&gt;
 	  &lt;/div&gt;
-	  
+
 	</pre>
       </div>
 
-      
-      
+
+
       <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.2.0/ui-bootstrap.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.2.0/ui-bootstrap-tpls.min.js"></script>
       <script src="builder.js"></script>
 
       <script src="https://www.gstatic.com/firebasejs/3.5.3/firebase.js"></script>
-      <script src="init.js"></script>
+      <script src="firebase-init.js"></script>
       <script src="login.js"></script>
-      
-      <script>
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	
-	ga('create', 'UA-84583342-1', 'auto');
-	ga('send', 'pageview');
-	
-      </script>
-      
+      <script src="ga.js"></script>
+
   </body>
 </html>
