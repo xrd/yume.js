@@ -2,20 +2,24 @@ var scriptsRef;
 
 function init() {
 
+firebase.database.enableLogging(true)
 var firebaseApp = firebaseInit();
 var db = firebaseApp.database()
 
 // create Vue app
 var app = new Vue({
-  // element to mount to
   mounted: function() {
     firebase.auth().onAuthStateChanged( this.onUserLogin );
   },
+  // element to mount to
   el: '#app',
   // initial data
   data: {
-    user: undefined,
-    name: undefined
+    user: {},
+    scripts: [],
+    name: "",
+    selectedScript: undefined,
+    newScript: {}
   },
   // firebase binding
   // https://github.com/vuejs/vuefire
@@ -53,21 +57,30 @@ var app = new Vue({
         firebase.auth().signOut();
       }
     },
-    addItem () {
+    addItem: function() {
+      console.log( "Creating new item" );
       this.$firebaseRefs.scripts.push({
         name: this.name
       })
+      this.name = ""
+    },
+    addLine: function() {
+      if( !this.selectedScript.lines ) {
+        this.selectedScript.lines = []
+      }
     },
     onUserLogin: function(user) {
       console.log( "Logged in success!");
       if (user) {
         this.user = user;
-        this.$bindAsObject('scripts', firebase.database().ref( this.user.uid + '/scripts') )
+        this.$bindAsArray( 'scripts', db.ref( '/scripts/' + user.uid )
+        this.$bindAsArray( 'lines', db.ref( '/lines' )
         console.log( "email", this.user.email );
       }
     },
-    removeScript: function (user) {
-      usersRef.child(user['.key']).remove()
+    removeScript: function (script) {
+      // console.log( "Script", script )
+      this.$firebaseRefs.scripts.child(script['.key']).remove()
     }
   }
 })

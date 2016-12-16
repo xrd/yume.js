@@ -1,37 +1,45 @@
 <html>
 
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
-  </head>
+</head>
 
-  <body>
+<body>
 
-    <div id="app">
-      <button v-on:click="loginToFirebase">Toggle Login</button>
+  <div id="app">
+    <button v-on:click="loginToFirebase">Toggle Login</button>
 
-      <span v-if="user">Email: {{ user.email }}</span>
+    <span v-if="user">Email: {{ user.email }}</span>
+    <div>
+      <h3>Scripts:</h3>
+      <div v-for="script in scripts">
+        <span v-on:click="selectedScript = script">{{ script.name }}</span>
+        <span v-on:click="removeScript(script)">X</span>
+      </div>
+    </div>
 
-      <ul is="transition-group">
-        <li v-for="script in scripts" class="user" :key="script['.key']">
-          {{ script }}
-          <!-- <span v-on:click="loadScript">{{script.name}}</span>
-          <button v-on:click="removeScript(script)">X</button> -->
-        </li>
-      </ul>
+    <div v-if="selectedScript">
+      <h1>{{ selectedScript.name }}</h1>
+      <button v-on:click="addLine">Add Line</button>
+      <div v-for="line in selectedScript.lines">
+        {{ line.text }}
+      </div>
+
     </div>
 
     <input v-model="name" placeholder="Enter name of script">
     <button v-on:click="addItem">Add Item</button>
+  </div>
 
-    <script src="https://www.gstatic.com/firebasejs/3.5.3/firebase.js"></script>
-    <script src="https://unpkg.com/vue/dist/vue.js"></script>
-    <script src="https://unpkg.com/vuefire/dist/vuefire.js"></script>
-    <script src="firebase-init.js"></script>
-    <script src="script.js"></script>
-    <script src="ga.js"></script>
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase.js"></script>
+  <script src="https://unpkg.com/vuefire/dist/vuefire.js"></script>
+  <script src="firebase-init.js"></script>
+  <script src="script.js"></script>
+  <script src="ga.js"></script>
 
-  </body>
+</body>
 </html>
