@@ -227,9 +227,9 @@ function Yume() {
 
         if( data ) {
           var parsedDur = parseInt( data.duration ) || 5;
-          var sceneIsOver = sceneIsOver( sceneDuration );
+          var isSceneOver = sceneIsOver( sceneDuration );
           var sceneDuration = parsedDur * MS_PER_SECOND;
-          if( !sceneIsOver ) {
+          if( !isSceneOver ) {
             if( data.camera ) {
               easeCamera( p );
             }
@@ -263,10 +263,9 @@ function Yume() {
           //     }
           // }
 
-	// Crashing?
-          //if( sceneIsOver ) {
-            // noLoop(); // Stop drawing.
-          //}
+          if( isSceneOver ) {
+            noLoop(); // Stop drawing.
+          }
         }
       }
 
