@@ -227,8 +227,8 @@ function Yume() {
 
         if( data ) {
           var parsedDur = parseInt( data.duration ) || 5;
-          var isSceneOver = sceneIsOver( sceneDuration );
           var sceneDuration = parsedDur * MS_PER_SECOND;
+          var isSceneOver = sceneIsOver( sceneDuration );
           if( !isSceneOver ) {
             if( data.camera ) {
               easeCamera( p );
@@ -264,7 +264,8 @@ function Yume() {
           // }
 
           if( isSceneOver ) {
-            noLoop(); // Stop drawing.
+            console.log( "No more drawing needed, stopping" );
+            p.noLoop(); // Stop drawing.
           }
         }
       }
