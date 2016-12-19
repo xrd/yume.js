@@ -263,9 +263,10 @@ function Yume() {
           //     }
           // }
 
-          if( sceneIsOver ) {
-            noLoop(); // Stop drawing.
-          }
+	// Crashing?
+          //if( sceneIsOver ) {
+            // noLoop(); // Stop drawing.
+          //}
         }
       }
 
